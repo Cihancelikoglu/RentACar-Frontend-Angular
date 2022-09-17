@@ -1,0 +1,34 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+      <!-- content-header component -->
+      <app-content-header [contentHeader]="contentHeader"></app-content-header>
+  
+      <!-- Basic Alerts start -->
+      <section>
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body pb-1">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">Brands Id</th>
+                      <th scope="col">Brands Name</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let brand of brands">
+                      <th scope="row">{{brand.id}}</th>
+                      <td>{{brand.brandName}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Basic Alerts end -->
+    </div>
+  </div>
+  
