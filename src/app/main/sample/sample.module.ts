@@ -12,6 +12,8 @@ import { BrandsComponent } from './brands/brands.component';
 import { CustomerComponent } from './customer/customer.component';
 import { ColorComponent } from './color/color.component';
 import { RentalsComponent } from './rentals/rentals.component';
+import { CarDetailComponent } from './cars/carDetail/car-detail/car-detail.component';
+import { SwiperModule } from "swiper/angular";
 
 const routes = [
   {
@@ -43,12 +45,15 @@ const routes = [
     path: 'cars',
     component: CarsComponent,
     data: { animation: 'cars' }
-  }
+  },
+  {path:"cars/color/:colorId", component:CarsComponent},
+  {path:"cars/brand/:brandId", component:CarsComponent},
+  {path:"cars/cardetail/:carId", component:CarDetailComponent}
 ];
 
 @NgModule({
-  declarations: [HomeComponent, CarsComponent, BrandsComponent, CustomerComponent, ColorComponent, RentalsComponent],
-  imports: [RouterModule.forChild(routes), ContentHeaderModule, TranslateModule, CoreCommonModule],
+  declarations: [HomeComponent, CarsComponent, BrandsComponent, CustomerComponent, ColorComponent, RentalsComponent, CarDetailComponent],
+  imports: [RouterModule.forChild(routes), ContentHeaderModule, TranslateModule, CoreCommonModule,SwiperModule],
   exports: [HomeComponent]
 })
 export class SampleModule {}
