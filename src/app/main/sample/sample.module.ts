@@ -14,6 +14,7 @@ import { ColorComponent } from './color/color.component';
 import { RentalsComponent } from './rentals/rentals.component';
 import { CarDetailComponent } from './cars/carDetail/car-detail/car-detail.component';
 import { SwiperModule } from "swiper/angular";
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const routes = [
   {
@@ -53,7 +54,7 @@ const routes = [
 
 @NgModule({
   declarations: [HomeComponent, CarsComponent, BrandsComponent, CustomerComponent, ColorComponent, RentalsComponent, CarDetailComponent],
-  imports: [RouterModule.forChild(routes), ContentHeaderModule, TranslateModule, CoreCommonModule,SwiperModule],
+  imports: [RouterModule.forChild(routes), ContentHeaderModule, TranslateModule, CoreCommonModule,SwiperModule,NgbModule],
   exports: [HomeComponent]
 })
 export class SampleModule {}

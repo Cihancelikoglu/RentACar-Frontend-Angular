@@ -1,53 +1,72 @@
-<div class="content-wrapper container-xxl p-0">
-  <div class="content-body">
+<div class="app-content ecommerce-application">
+  <div class="content-wrapper container-xxl p-0">
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
-    <section>
-      <div class="row">
-        <div class="col-3">
-          <div class="card">
-            <div class="card-body pb-1">
-              <div class="color">
-                <h3>Colors</h3>
-                <h5 *ngIf="currentColor"> {{currentColor.colorName}} seçtiniz</h5>
-                <ul class="list-group">
-                  <li (click)="setCurrentColor(color)" routerLink="/cars/color/{{color.id}}" *ngFor="let color of colors" [class]="getCurrentColorClass(color)">{{color.colorName}}</li>
-                </ul>
+    <div class="row">
+      <div class="col-3">
+        <div class="sidebar">
+          <div class="sidebar-shop">
+            <div class="card">
+              <h4 class="text-left pl-1 pt-2">Seçenekler</h4>
+              <div ngbDropdown [placement]="'right-top'" class="btn-group dropright m-1">
+                <button *ngIf="!currentColor" ngbDropdownToggle type="button" class="btn btn-primary"
+                  rippleEffect>Select Color</button>
+                <button *ngIf="currentColor" ngbDropdownToggle type="button" class="btn btn-primary"
+                  rippleEffect>{{currentColor.colorName}}</button>
+                <div ngbDropdownMenu>
+                  <h6 class="dropdown-header">Colors</h6>
+                  <a ngbDropdownItem *ngFor="let color of colors" (click)="setCurrentColor(color)"
+                    routerLink="/cars/color/{{color.id}}">{{color.colorName}}</a>
+                </div>
               </div>
-              <div class="brand">
-                <h3>Brands</h3>
-                <h5 *ngIf="currentBrand"> {{currentBrand.brandName}} seçtiniz</h5>
-                <ul class="list-group">
-                  <li (click)="setCurrentBrand(brand)" routerLink="/cars/brand/{{brand.id}}" *ngFor="let brand of brands" [class]="getCurrentBrandClass(brand)">{{brand.brandName}}</li>
-                </ul>
+              <div ngbDropdown [placement]="'right-top'" class="btn-group dropright m-1">
+                <button *ngIf="!currentBrand" ngbDropdownToggle type="button" class="btn btn-primary"
+                  rippleEffect>Select Brand</button>
+                <button *ngIf="currentBrand" ngbDropdownToggle type="button" class="btn btn-primary"
+                  rippleEffect>{{currentBrand.brandName}}</button>
+                <div ngbDropdownMenu>
+                  <h6 class="dropdown-header">Brands</h6>
+                  <a ngbDropdownItem *ngFor="let brand of brands" (click)="setCurrentBrand(brand)"
+                    routerLink="/cars/brand/{{brand.id}}">{{brand.brandName}}</a>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-9">
-          <div class="card">
-            <div class="card-body pb-1">
-              <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th scope="col">Cars Id</th>
-                    <th scope="col">Brands Name</th>
-                    <th scope="col">Color Name</th>
-                    <th scope="col">Daily Price</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr routerLink="/cars/cardetail/{{car.carId}}" *ngFor="let car of cars">
-                    <th scope="row">{{ car.carId }}</th>
-                    <td>{{ car.brandName }}</td>
-                    <td>{{ car.colorName }}</td>
-                    <td>{{ car.dailyPrice }}</td>
-                  </tr>
-                </tbody>
-              </table>
             </div>
           </div>
         </div>
       </div>
-    </section>
+      <div class="col-9">
+        <div class="content-body">
+          <section id="ecommerce-products" class="grid-view">
+            <div class="card ecommerce-card" *ngFor="let car of cars">
+              <div class="item-img text-center">
+                <a routerLink="/cars/cardetail/{{car.carId}}">
+                  <img class="img-fluid card-img-top" src="{{baseImageUrl}}{{car.carImages}}"
+                    alt="img-placeholder" /></a>
+              </div>
+              <div class="card-body">
+                <div class="item-wrapper">
+                  <div>
+                    <h6 class="item-price">Gün / {{car.dailyPrice}}</h6>
+                  </div>
+                </div>
+                <h6 class="item-name">
+                  <a class="text-body" href="app-ecommerce-details.html">{{car.brandName}}</a>
+                  <span class="card-text item-company">By <a href="#" class="company-name">{{car.brandName}}</a></span>
+                </h6>
+                <p class="card-text item-description">
+                  {{car.description}}
+                </p>
+              </div>
+              <div class="item-options text-center">
+                <a href="#" class="btn btn-light btn-wishlist">
+                </a>
+                <a routerLink="/cars/cardetail/{{car.carId}}" class="btn btn-primary btn-cart">
+                  <span class="add-to-cart">İncele</span>
+                </a>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

@@ -24,7 +24,7 @@ $search-bar-height: 48px;
 
   // Shop Sidebar
   .sidebar-shop {
-    margin-top: 0.85rem;
+    // margin-top: 0.85rem;
     width: $sidebar-width;
     z-index: 998;
 
@@ -227,7 +227,7 @@ $search-bar-height: 48px;
   .grid-view,
   .list-view {
     &:not(.wishlist-items) {
-      margin-top: 2rem;
+      // margin-top: 2rem;
     }
   }
 
@@ -245,7 +245,7 @@ $search-bar-height: 48px;
 
       // Item Image
       .item-img {
-        padding-top: 0.5rem;
+        // padding-top: 0.5rem;
         min-height: 15.85rem;
         display: flex;
         align-items: center;

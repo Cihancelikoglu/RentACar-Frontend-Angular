@@ -16,6 +16,7 @@ export class CarsComponent implements OnInit {
   cars: CarDetailDto[] = [];
   colors: Color[] = [];
   brands: Brand[] = [];
+  baseImageUrl = "https://localhost:44330/Uploads/Images/"
 
   currentBrand:Brand;
   currentColor:Color;

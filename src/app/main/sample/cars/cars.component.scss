@@ -1,0 +1,13 @@
+@import "../../../../@core/scss/base/pages/app-ecommerce.scss";
+@import "../../../../@core/scss/angular/animation";
+@import "../../../../@core/scss/base/bootstrap-extended.scss";
+
+.label-custom{
+    color: #cbcbcb;
+    font-size: 15px;
+    padding-left: 5px;
+}
+
+.label-custom:active{
+    color: #00ffc3;
+}
