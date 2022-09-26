@@ -19,22 +19,18 @@
               </div>
             </div>
             <div class="col-12 col-md-7">
-            <h4 *ngFor="let carDetail of carDetails">{{carDetail.brandName}}</h4>
-              <span class="card-text item-company"
-                >By
-                <a *ngFor="let carDetail of carDetails" href="javascript:void(0)" class="company-name">{{carDetail.brandName}}</a></span>
-              <div class="ecommerce-details-price d-flex flex-wrap mt-1">
-                <h4 class="item-price mr-1">sdsdasd</h4>
-              </div>
-              <p class="card-text">
-                Fiyat - <span *ngFor="let carDetail of carDetails" class="text-success">{{carDetail.dailyPrice}}</span>
+            <h4 *ngFor="let carDetail of carDetails">{{carDetail.carName}}</h4>
+              <span class="card-text item-company">By
+                <a *ngFor="let carDetail of carDetails" class="company-name">{{carDetail.brandName}}</a></span>
+              <p class="card-text mt-1">
+                Fiyat - <span *ngFor="let carDetail of carDetails" class="text-success">{{carDetail.dailyPrice}} ₺</span>
               </p>
-              <p class="card-text">Açıklama</p>
               <hr />
               <div class="product-color-options">
                 <h6 *ngFor="let carDetail of carDetails">{{carDetail.description}}</h6>
               </div>
               <hr />
+              <app-rental-date-control></app-rental-date-control>
             </div>
           </div>
         </div>
@@ -42,4 +38,6 @@
     </section>
   </div>
 </div>
+
+
 

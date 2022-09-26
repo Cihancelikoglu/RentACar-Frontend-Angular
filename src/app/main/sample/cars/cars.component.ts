@@ -17,9 +17,13 @@ export class CarsComponent implements OnInit {
   colors: Color[] = [];
   brands: Brand[] = [];
   baseImageUrl = "https://localhost:44330/Uploads/Images/"
+  filterText="";
 
   currentBrand:Brand;
   currentColor:Color;
+
+  selectedColor:any;
+  selectedBrand:any;
 
   constructor(
     private carService: CarService,
@@ -36,9 +40,14 @@ export class CarsComponent implements OnInit {
     this.activatedRoute.params.subscribe((params) => {
       if (params["colorId"]) {
         this.getCarsByColor(params["colorId"]);
-      } else if (params["brandId"]) {
+      } 
+      else if (params["brandId"]) {
         this.getCarsByBrand(params["brandId"]);
-      } else {
+      }
+      else if(params["colorId"],params["brandId"]){
+        this.getCarFilter(params["colorId"],params["brandId"])
+      }
+      else {
         this.getCars();
       }
     });
@@ -116,5 +125,19 @@ export class CarsComponent implements OnInit {
     else{
       return "list-group-item"
     }
+  }
+
+  getCarFilter(colorId:number,brandId:number){
+    this.carService.getCarFilter(colorId,brandId).subscribe((response)=>{
+      this.cars = response.data;
+    })
+  }
+
+  ChangeColors(e){
+    this.selectedColor = e.target.value;
+  }
+
+  ChangeBrands(e){
+    this.selectedBrand = e.target.value;
   }
 }

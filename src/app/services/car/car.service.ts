@@ -12,7 +12,7 @@ import { Color } from "app/models/color";
 export class CarService {
   apiUrl = "https://localhost:44330";
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   getCars(): Observable<ListResponseModel<CarDetailDto>> {
     let newPath = this.apiUrl + "/api/cars/getcardetail";
@@ -29,5 +29,11 @@ export class CarService {
     let newPath =
       this.apiUrl + "/api/cars/getbybrand?brandId=" + brandId;
     return this.httpClient.get<ListResponseModel<CarDetailDto>>(newPath);
+  }
+
+  getCarFilter(colorId: number, brandId: number): Observable<ListResponseModel<CarDetailDto>> {
+    let newPath = this.apiUrl + "/api/cars/getcarfilter?carId=" + colorId + "&brandId=" + brandId;
+    return this.httpClient.get<ListResponseModel<CarDetailDto>>(newPath);
+
   }
 }

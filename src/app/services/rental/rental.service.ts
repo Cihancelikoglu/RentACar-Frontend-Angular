@@ -8,11 +8,23 @@ import { Observable } from "rxjs";
   providedIn: "root",
 })
 export class RentalService {
-  apiUrl = "https://localhost:44330/api/rentals/getrentaldetail";
+  apiUrl = "https://localhost:44330";
 
   constructor(private httpClient: HttpClient) {}
 
   getRentals(): Observable<ListResponseModel<RentalDetailDto>> {
-    return this.httpClient.get<ListResponseModel<RentalDetailDto>>(this.apiUrl);
+    let newPath = this.apiUrl + "/api/rentals/getrentaldetail";
+    return this.httpClient.get<ListResponseModel<RentalDetailDto>>(newPath);
+  }
+
+
+  rentalDateControl(rental:RentalDetailDto){
+    let newPath = this.apiUrl + "/api/rentals/rentaldatecontrol";
+    return this.httpClient.post(newPath,rental);
+  }
+
+  addRentals(rental: RentalDetailDto){
+    let newPath = this.apiUrl + "/api/rentals/add";
+    return this.httpClient.post(newPath,rental);
   }
 }

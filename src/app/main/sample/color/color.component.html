@@ -2,7 +2,9 @@
   <div class="content-body">
     <!-- content-header component -->
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
-
+    <div class="mb-2">
+      <input type="text" class="form-control" placeholder="Search Color" [(ngModel)]="filterText" id="filterText">
+    </div>
     <!-- Basic Alerts start -->
     <section>
       <div class="row">
@@ -17,7 +19,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let color of colors">
+                  <tr *ngFor="let color of colors | filterColor:filterText">
                     <th scope="row">{{color.id}}</th>
                     <td>{{color.colorName}}</td>
                   </tr>

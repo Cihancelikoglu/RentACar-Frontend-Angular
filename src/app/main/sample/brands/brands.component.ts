@@ -10,6 +10,7 @@ import { BrandService } from 'app/services/brand/brand.service';
 export class BrandsComponent implements OnInit {
   brands: Brand[] = [];
   dataLoaded = false;
+  filterText="";
 
   constructor(private brandService:BrandService) { }
 

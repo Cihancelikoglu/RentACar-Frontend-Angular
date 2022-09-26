@@ -1,0 +1,23 @@
+<button class="btn btn-lg btn-primary float-right" (click)="open(content)">Rent a Car</button>
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Rent A Car</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="rentalAddForm">
+        <div class="mb-3">
+            <label>Kiralama Zamanı</label>
+            <input type="datetime-local" formControlName="rentDate" class="form-control"/>
+            <label>Dönüş Zamanı</label>
+            <input type="datetime-local" formControlName="returnDate" class="form-control"/>
+            <input type="number" *ngFor="let carDetail of carDetails" formControlName="carId" [(ngModel)]="carDetail.carId" class="form-control d-none"/>
+            <!-- <label>Müşteri Id</label>
+            <input type="number" formControlName="customerName" class="form-control" placeholder="yyyy-mm-dd"/> -->
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="rentalDateControl()">Kontrol Et</button>
+    </div>
+  </ng-template>

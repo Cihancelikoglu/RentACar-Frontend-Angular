@@ -5,7 +5,6 @@ import { CarImages } from 'app/models/carImage';
 import { CarDetailService } from 'app/services/carDetail/car-detail.service';
 import { CarimageService } from 'app/services/carImages/carimage.service';
 
-import { BehaviorSubject } from 'rxjs';
 import SwiperCore, { Keyboard, Pagination, Navigation, Virtual } from 'swiper';
 SwiperCore.use([Keyboard, Pagination, Navigation, Virtual]);
 
@@ -17,13 +16,18 @@ SwiperCore.use([Keyboard, Pagination, Navigation, Virtual]);
   encapsulation: ViewEncapsulation.None,
 })
 export class CarDetailComponent implements OnInit {
-  carDetails:CarDetailDto[]=[];
-  carImages:CarImages[]=[];
+  carDetails: CarDetailDto[] = [];
+  carImages: CarImages[] = [];
   baseImageUrl = "https://localhost:44330/Uploads/Images/"
+  closeResult = '';
 
 
-  constructor(private carDetailService: CarDetailService,private carImageService:CarimageService,private activatedRoute: ActivatedRoute) { }
+  constructor(private carDetailService: CarDetailService,
+    private carImageService: CarimageService,
+    private activatedRoute: ActivatedRoute) { }
+    
   public contentHeader: object;
+
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params) => {
       if (params["carId"]) {
@@ -33,7 +37,6 @@ export class CarDetailComponent implements OnInit {
         this.getCarImages();
       }
     });
-
     this.contentHeader = {
       headerTitle: "Cars",
       actionButton: true,
@@ -54,13 +57,13 @@ export class CarDetailComponent implements OnInit {
     };
   }
 
-  getCarDetails(carId:number) {
+  getCarDetails(carId: number) {
     this.carDetailService.getCarDetails(carId).subscribe((response) => {
       this.carDetails = response.data;
     });
   }
 
-  getByCarImageId(carId:number) {
+  getByCarImageId(carId: number) {
     this.carImageService.getByCarImageId(carId).subscribe((response) => {
       this.carImages = response.data;
     });
@@ -71,5 +74,6 @@ export class CarDetailComponent implements OnInit {
       this.carImages = response.data;
     });
   }
+
   
 }
