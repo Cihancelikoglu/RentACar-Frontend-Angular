@@ -23,6 +23,7 @@ import { FilterColorPipe } from 'app/pipes/filter-color.pipe';
 import { ToastrModule } from 'ngx-toastr';
 import { RentalAddComponent } from './rental-add/rental-add.component';
 import { RentalDateControlComponent } from './rental-date-control/rental-date-control.component';
+import { NgxMaskModule, IConfig } from 'ngx-mask';
 
 const routes = [
   {
@@ -64,7 +65,8 @@ const routes = [
 @NgModule({
   declarations: [HomeComponent, CarsComponent, BrandsComponent, CustomerComponent, ColorComponent, RentalsComponent, CarDetailComponent ,FilterBrandPipe,FilterCarPipe,FilterColorPipe, RentalAddComponent, RentalDateControlComponent],
   imports: [RouterModule.forChild(routes), ContentHeaderModule, TranslateModule, CoreCommonModule,SwiperModule,NgbModule,FormsModule,BrowserAnimationsModule,
-  ToastrModule.forRoot()
+  NgxMaskModule.forRoot(),
+    ToastrModule.forRoot()
   ],
   exports: [HomeComponent]
 })

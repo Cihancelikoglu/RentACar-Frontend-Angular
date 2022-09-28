@@ -8,16 +8,22 @@
       <form [formGroup]="rentalAddForm">
         <div class="mb-3">
             <label>Kiralama Zamanı</label>
-            <input type="datetime-local" formControlName="rentDate" class="form-control"/>
+            <input type="datetime-local" formControlName="rentDate" [(ngModel)]="rentDatee" class="form-control"/>
             <label>Dönüş Zamanı</label>
-            <input type="datetime-local" formControlName="returnDate" class="form-control"/>
+            <input type="datetime-local" formControlName="returnDate" [(ngModel)]="returnDatee" class="form-control"/>
             <input type="number" *ngFor="let carDetail of carDetails" formControlName="carId" [(ngModel)]="carDetail.carId" class="form-control d-none"/>
             <!-- <label>Müşteri Id</label>
             <input type="number" formControlName="customerName" class="form-control" placeholder="yyyy-mm-dd"/> -->
         </div>
       </form>
+      <!-- <div *ngFor="let rental of rentals">
+        {{rental.returnDate}}
+        {{rental.price}}
+        {{rental.totalDate}}
+      </div> -->
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-primary" (click)="rentalDateControl()">Kontrol Et</button>
-    </div>
+      <button *ngFor="let carDetail of carDetails" type="button" class="btn btn-primary" (click)="rentalDateControl(carDetail)">Kontrol Et</button>
+  </div>
   </ng-template>
+

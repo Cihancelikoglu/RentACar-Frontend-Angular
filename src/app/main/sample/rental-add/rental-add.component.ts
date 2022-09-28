@@ -3,10 +3,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CarDetailDto } from 'app/models/carDetailDto';
 import { CarImages } from 'app/models/carImage';
+import { RentalDate } from 'app/models/rentalDate';
 import { CarDetailService } from 'app/services/carDetail/car-detail.service';
 import { CarimageService } from 'app/services/carImages/carimage.service';
+import { CreditCartService } from 'app/services/creditCart/credit-cart.service';
 import { RentalService } from 'app/services/rental/rental.service';
 import { ToastrService } from 'ngx-toastr';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-rental-add',
@@ -15,10 +18,12 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class RentalAddComponent implements OnInit {
   rentalAddForm :FormGroup
+  paymentAddForm :FormGroup
   carDetails: CarDetailDto[] = [];
   carImages: CarImages[] = [];
   baseImageUrl = "https://localhost:44330/Uploads/Images/"
   parivatecarId:number;
+  rentals: RentalDate[] = [];
   
   constructor(
     private rentalService:RentalService,
@@ -26,7 +31,9 @@ export class RentalAddComponent implements OnInit {
     private toastrService:ToastrService,
     private carDetailService:CarDetailService,
     private activatedRoute: ActivatedRoute,
-    private carImageService:CarimageService
+    private carImageService:CarimageService,
+    private creditCartService:CreditCartService,
+    private location: Location
   ) { }
 
   public contentHeader: object;
@@ -38,7 +45,10 @@ export class RentalAddComponent implements OnInit {
         this.getByCarImageId(params["carId"]);
       }
     });
-
+    
+    this.getLocalStorage();
+    this.createRentalForm()
+    this.createPaymentAddForm();
     this.contentHeader = {
       headerTitle: "Payment",
       actionButton: true,
@@ -63,32 +73,8 @@ export class RentalAddComponent implements OnInit {
     };
   }
 
-  createRentalAddForm() {
-    this.rentalAddForm = this.formBuilder.group({
-      carId: ["", Validators.required],
-      // customerName: ["", Validators.required],
-      rentDate: ["", Validators.required],
-      returnDate: ["", Validators.required]
-    })
-  }
-
-  addRental(){
-    if(this.rentalAddForm.valid){
-      let rentalModel = Object.assign({},this.rentalAddForm.value)
-      this.rentalService.addRentals(rentalModel).subscribe(response=>{
-        console.log(response);
-        this.toastrService.success("Araç Kiralandı","Başarılı",{toastClass: 'toast ngx-toastr',closeButton: true})
-
-      },responseError=>{
-        console.log(responseError.error);
-        this.toastrService.error("Bu Tarihler Arası Aracı Kiralayamazsınız","Başarısız",{toastClass: 'toast ngx-toastr',closeButton: true})
-      })
-    }
-    else{
-      this.toastrService.error("Eksik Alanları Doldurunuz","Dikkat",{toastClass: 'toast ngx-toastr',closeButton: true
-        
-      })
-    }
+  getLocalStorage() {
+    this.rentals = JSON.parse(localStorage.getItem('RentalsDetail'))
   }
 
   getCarDetails(carId: number) {
@@ -103,4 +89,69 @@ export class RentalAddComponent implements OnInit {
       this.carImages = response.data;
     });
   }
+
+  createRentalForm() {
+    this.rentalAddForm = this.formBuilder.group({
+      carId: ["", Validators.required],
+      rentDate: ["", Validators.required],
+      returnDate: ["", Validators.required],
+      totalPrice: ["", Validators.required],
+      totalDay: ["", Validators.required]
+    })
+  }
+
+  createPaymentAddForm() {
+    this.paymentAddForm = this.formBuilder.group({
+      cardNumber: ["", Validators.required],
+      expireYearMonth: ["", Validators.required],
+      cvv: ["", Validators.required],
+      cardHolder: ["", Validators.required]
+    })
+  }
+
+  addRental(){
+    if(this.rentalAddForm.valid && this.paymentAddForm.valid){
+        let rentalModel = Object.assign({},this.rentalAddForm.value)
+        let paymentModel = Object.assign({}, this.paymentAddForm.value)
+        
+        this.creditCartService.peymentControl(paymentModel).subscribe(pamnetResponse => {
+          this.rentalService.addRentals(rentalModel).subscribe(rentalResponse=>{
+            console.log(rentalResponse);
+          },responseError=>{
+            console.log(responseError.error);
+          })
+
+          console.log(pamnetResponse);
+          this.toastrService.success("Ödeme Başarıyla Gerçekleşti", "Araç Kiralandı", {
+            toastClass: 'toast ngx-toastr',
+            closeButton: true
+          })
+          localStorage.removeItem("RentalsDetail");
+          setTimeout(() => {
+            window.location.href = "/cars"
+          }, 3000);
+        }, responseError => {
+          console.log(responseError.error);
+          this.toastrService.error("Kart Bilgileriniz Kontrol Ediniz", "Başarısız", {
+            toastClass: 'toast ngx-toastr',
+            closeButton: true
+          })
+        })
+    }
+    else{
+      this.toastrService.error("Eksik Alanları Doldurunuz","Dikkat",{toastClass: 'toast ngx-toastr',closeButton: true
+      })
+    }
+  }
+
+  removeStorage(){
+    localStorage.removeItem("RentalsDetail");
+    this.toastrService.error("Ödeme İptal Edildi","Yönlendiriliyorsunuz",{toastClass: 'toast ngx-toastr',closeButton: true})
+    setTimeout(() => {
+      this.location.back();
+    }, 3000);
+    
+  }
+  
+  
 }

@@ -1,43 +1,75 @@
 <div class="content-wrapper container-xxl p-0">
-    <app-content-header [contentHeader]="contentHeader"></app-content-header>
-    <div class="content-body">
-      <section class="app-ecommerce-details">
-        <div class="card">
-          <div class="card-body">
-            <div class="row my-2">
-              <div
-                class="col-12 col-md-5 d-flex align-items-center justify-content-center mb-2 mb-md-0">
-                <swiper direction="horizontal" [pagination]="{ clickable: true }" [navigation]="true">
-                  <ng-container *ngFor="let carImage of carImages; let i = index">
-                    <ng-template swiperSlide>
-                      <img *ngIf="carImage.imagePath" class="img-fluid" src="{{baseImageUrl}}{{carImage.imagePath}}" />
-                    </ng-template>
-                  </ng-container>
-                </swiper>
-                <div  *ngFor="let carDetail of carDetails">
-                  <img *ngIf="!carDetail.carImages" class="img-fluid" src="../../../../../../assets/images/banner/banner-11.jpg" class="img-fluid" />
-                </div>
+  <app-content-header [contentHeader]="contentHeader"></app-content-header>
+  <div class="content-body">
+    <section class="app-ecommerce-details">
+      <div class="card">
+        <div class="card-body">
+          <div class="row my-2">
+            <div class="col-12 col-md-5 d-flex align-items-center justify-content-center mb-2 mb-md-0">
+              <swiper direction="horizontal" [pagination]="{ clickable: true }" [navigation]="true">
+                <ng-container *ngFor="let carImage of carImages; let i = index">
+                  <ng-template swiperSlide>
+                    <img *ngIf="carImage.imagePath" class="img-fluid" src="{{baseImageUrl}}{{carImage.imagePath}}" />
+                  </ng-template>
+                </ng-container>
+              </swiper>
+              <div *ngFor="let carDetail of carDetails">
+                <img *ngIf="!carDetail.carImages" class="img-fluid"
+                  src="../../../../../../assets/images/banner/banner-11.jpg" class="img-fluid" />
               </div>
-              <div class="col-12 col-md-7">
+            </div>
+            <div class="col-12 col-md-7 text-center">
               <h4 *ngFor="let carDetail of carDetails">{{carDetail.carName}}</h4>
-                <span class="card-text item-company">By
-                  <a *ngFor="let carDetail of carDetails" class="company-name">{{carDetail.brandName}}</a></span>
-                <p class="card-text mt-1">
-                  Fiyat - <span *ngFor="let carDetail of carDetails" class="text-success">{{carDetail.dailyPrice}} ₺</span>
-                </p>
-                <hr />
-                <div class="product-color-options">
-                  <h6 *ngFor="let carDetail of carDetails">{{carDetail.description}}</h6>
+              <span class="card-text item-company">By
+                <a *ngFor="let carDetail of carDetails" class="company-name">{{carDetail.brandName}}</a></span>
+              <p class="card-text mt-1">
+                Toplam Kiralama Ücreti - <span *ngFor="let rental of rentals" class="text-success">{{rental.price}}
+                  ₺</span>
+              </p>
+              <hr />
+              <form [formGroup]="paymentAddForm">
+                <div class="d-flex justify-content-center text-left">
+                  <div>
+                    <label>Name Surname</label>
+                    <input type="text" formControlName="cardHolder" placeholder="Cihan Çelikoğlu"
+                      class="form-control mb-1" />
+                    <label>Card Number</label>
+                    <input type="text" formControlName="cardNumber" mask="0000-0000-0000-0000"
+                      placeholder="0000-0000-0000-0000" class="form-control mb-1" />
+            
+                    <div class="d-flex justify-content-center">
+                      <div class="mr-1">
+                        <label>Date</label>
+                        <input type="text" formControlName="expireYearMonth" mask="00/00" placeholder="00/00"
+                          class="form-control mb-1" />
+                      </div>
+                      <div>
+                        <label>CVV</label>
+                        <input type="text" formControlName="cvv" mask="000" placeholder="000"
+                          class="form-control mb-1" />
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <hr />
-              </div>
+              </form>
+
+              <form [formGroup]="rentalAddForm">
+                <div class="mb-3" *ngFor="let rental of rentals">
+                    <input type="text" formControlName="rentDate" [(ngModel)]="rental.rentDate" class="form-control d-none"/>
+                    <input type="text" formControlName="returnDate" [(ngModel)]="rental.returnDate" class="form-control d-none"/>
+                    <input type="number" formControlName="carId" [(ngModel)]="rental.carId" class="form-control d-none"/>
+                    <input type="number" formControlName="totalPrice" [(ngModel)]="rental.price" class="form-control d-none"/>
+                    <input type="number" formControlName="totalDay" [(ngModel)]="rental.totalDay" class="form-control d-none"/>
+                    <!-- <label>Müşteri Id</label>
+                    <input type="number" formControlName="customerName" class="form-control" placeholder="yyyy-mm-dd"/> -->
+                </div>
+              </form>
+              <button type="button" class="btn btn-danger mr-2" (click)="removeStorage()">Ödemeyi İptal Et</button>
+              <button type="button" class="btn btn-success" (click)="addRental()">Ödeme Yap</button>
             </div>
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   </div>
-  
-  
-  
-  
+</div>

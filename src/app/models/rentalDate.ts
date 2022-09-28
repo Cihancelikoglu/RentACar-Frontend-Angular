@@ -1,9 +1,8 @@
-export interface RentalDetailDto{
+export class RentalDate{
     carId:number;
     carName:string;
-    customerName:string;
     rentDate:Date;
     returnDate:Date;
+    price:number;
     totalDay:number;
-    totalPrice:number;
 }
