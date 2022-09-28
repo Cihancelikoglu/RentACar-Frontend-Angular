@@ -105,7 +105,8 @@ export class RentalAddComponent implements OnInit {
       cardNumber: ["", Validators.required],
       expireYearMonth: ["", Validators.required],
       cvv: ["", Validators.required],
-      cardHolder: ["", Validators.required]
+      cardHolder: ["", Validators.required],
+      balance: ["", Validators.required]
     })
   }
 
@@ -114,14 +115,14 @@ export class RentalAddComponent implements OnInit {
         let rentalModel = Object.assign({},this.rentalAddForm.value)
         let paymentModel = Object.assign({}, this.paymentAddForm.value)
         
-        this.creditCartService.peymentControl(paymentModel).subscribe(pamnetResponse => {
+        this.creditCartService.peymentControl(paymentModel).subscribe(paymentResponse => {
           this.rentalService.addRentals(rentalModel).subscribe(rentalResponse=>{
             console.log(rentalResponse);
           },responseError=>{
             console.log(responseError.error);
           })
 
-          console.log(pamnetResponse);
+          console.log(paymentResponse);
           this.toastrService.success("Ödeme Başarıyla Gerçekleşti", "Araç Kiralandı", {
             toastClass: 'toast ngx-toastr',
             closeButton: true
@@ -132,7 +133,7 @@ export class RentalAddComponent implements OnInit {
           }, 3000);
         }, responseError => {
           console.log(responseError.error);
-          this.toastrService.error("Kart Bilgileriniz Kontrol Ediniz", "Başarısız", {
+          this.toastrService.error("Kart Bilgileriniz Hatalı veya Limit Yetersiz", "Başarısız", {
             toastClass: 'toast ngx-toastr',
             closeButton: true
           })

@@ -48,6 +48,9 @@
                         <input type="text" formControlName="cvv" mask="000" placeholder="000"
                           class="form-control mb-1" />
                       </div>
+                      <div>
+                        <input *ngFor="let rental of rentals" type="text" formControlName="balance" [(ngModel)]="rental.price" class="form-control d-none"/>
+                      </div>
                     </div>
                   </div>
                 </div>
