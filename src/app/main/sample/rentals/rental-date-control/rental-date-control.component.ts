@@ -59,7 +59,7 @@ export class RentalDateControlComponent implements OnInit {
       let rentalModel = Object.assign({}, this.rentalAddForm.value)
       this.rentalService.rentalDateControl(rentalModel).subscribe(response => {
         console.log(response);
-        this.toastrService.success("Araç Kiralanabilir", "Yönlendiriliyorsunuz", { toastClass: 'toast ngx-toastr', closeButton: true })
+        this.toastrService.success(response.message,"Yönlendiriliyorsunuz", { toastClass: 'toast ngx-toastr', closeButton: true })
 
         var eventStartTime = new Date(this.rentDatee);
         var eventEndTime = new Date(this.returnDatee);
@@ -80,12 +80,12 @@ export class RentalDateControlComponent implements OnInit {
           window.location.href = "/cars/rental/" + this.carIdUrl;
         }, 3000);
 
-      }, responseError => {
-        console.log(responseError.error);
-        this.toastrService.error("Bu Tarihler Arası Aracı Kiralayamazsınız", "Başarısız", {
-          toastClass: 'toast ngx-toastr',
-          closeButton: true
-        })
+      },rentalResponseError=>{
+        if(rentalResponseError.error.Errors.length>0){
+          for (let i = 0; i < rentalResponseError.error.Errors.length; i++) {
+            this.toastrService.error(rentalResponseError.error.Errors[i].ErrorMessage,"Doğrulama Hatası")
+          }
+        }
       })
     }
     else {

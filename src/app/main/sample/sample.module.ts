@@ -21,9 +21,12 @@ import { FilterBrandPipe } from '../../pipes/filter-brand.pipe';
 import { FilterCarPipe } from 'app/pipes/filter-car.pipe';
 import { FilterColorPipe } from 'app/pipes/filter-color.pipe';
 import { ToastrModule } from 'ngx-toastr';
-import { RentalAddComponent } from './rental-add/rental-add.component';
-import { RentalDateControlComponent } from './rental-date-control/rental-date-control.component';
+import { RentalAddComponent } from './rentals/rental-add/rental-add.component';
+import { RentalDateControlComponent } from './rentals/rental-date-control/rental-date-control.component';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { CarAddComponent } from './cars/car-add/car-add.component';
+import { ColorAddComponent } from './color/color-add/color-add.component';
+import { BrandAddComponent } from './brands/brand-add/brand-add.component';
 
 const routes = [
   {
@@ -59,11 +62,14 @@ const routes = [
   {path:"cars/color/:colorId", component:CarsComponent},
   {path:"cars/brand/:brandId", component:CarsComponent},
   {path:"cars/cardetail/:carId", component:CarDetailComponent},
-  {path:"cars/rental/:carId", component:RentalAddComponent}
+  {path:"cars/rental/:carId", component:RentalAddComponent},
+  {path:"cars/addcar", component:CarAddComponent},
+  {path:"colors/addcolor", component:ColorAddComponent},
+  {path:"brands/addbrand", component:BrandAddComponent}
 ];
 
 @NgModule({
-  declarations: [HomeComponent, CarsComponent, BrandsComponent, CustomerComponent, ColorComponent, RentalsComponent, CarDetailComponent ,FilterBrandPipe,FilterCarPipe,FilterColorPipe, RentalAddComponent, RentalDateControlComponent],
+  declarations: [HomeComponent, CarsComponent, BrandsComponent, CustomerComponent, ColorComponent, RentalsComponent, CarDetailComponent ,FilterBrandPipe,FilterCarPipe,FilterColorPipe, RentalAddComponent, RentalDateControlComponent,CarAddComponent, ColorAddComponent, BrandAddComponent],
   imports: [RouterModule.forChild(routes), ContentHeaderModule, TranslateModule, CoreCommonModule,SwiperModule,NgbModule,FormsModule,BrowserAnimationsModule,
   NgxMaskModule.forRoot(),
     ToastrModule.forRoot()

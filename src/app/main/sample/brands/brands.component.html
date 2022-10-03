@@ -3,7 +3,14 @@
       <!-- content-header component -->
       <app-content-header [contentHeader]="contentHeader"></app-content-header>
       <div class="mb-2">
-        <input type="text" class="form-control" placeholder="Search Brand" [(ngModel)]="filterText" id="filterText">
+        <div class="row">
+          <div class="col-6">
+            <input type="text" class="form-control" placeholder="Search Color" [(ngModel)]="filterText" id="filterText">
+          </div>
+          <div class="col-6 text-right">
+            <button routerLink="/brands/addbrand" class="btn btn-primary" >Add Brand</button>
+          </div>
+        </div>
       </div>
       <!-- Basic Alerts start -->
       <section>

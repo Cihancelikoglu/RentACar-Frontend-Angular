@@ -5,6 +5,7 @@ import { ListResponseModel } from "app/models/listResponseModel";
 import { RentalDate } from "app/models/rentalDate";
 import { RentalDates } from "app/models/rentalDates";
 import { RentalDetailDto } from "app/models/rentalDetailDto";
+import { ResponseModel } from "app/models/responseModel";
 import { Observable } from "rxjs";
 
 @Injectable({
@@ -21,14 +22,14 @@ export class RentalService {
   }
 
 
-  rentalDateControl(rental:RentalDetailDto){
+  rentalDateControl(rental:RentalDetailDto):Observable<ResponseModel>{
     let newPath = this.apiUrl + "/api/rentals/rentaldatecontrol";
-    return this.httpClient.post(newPath,rental);
+    return this.httpClient.post<ResponseModel>(newPath,rental);
   }
 
-  addRentals(rental: RentalDetailDto){
+  addRentals(rental: RentalDetailDto):Observable<ResponseModel>{
     let newPath = this.apiUrl + "/api/rentals/add";
-    return this.httpClient.post(newPath,rental);
+    return this.httpClient.post<ResponseModel>(newPath,rental);
   }
 
 

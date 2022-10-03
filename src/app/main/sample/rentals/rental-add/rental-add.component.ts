@@ -117,12 +117,15 @@ export class RentalAddComponent implements OnInit {
         
         this.creditCartService.peymentControl(paymentModel).subscribe(paymentResponse => {
           this.rentalService.addRentals(rentalModel).subscribe(rentalResponse=>{
-            console.log(rentalResponse);
-          },responseError=>{
-            console.log(responseError.error);
+            this.toastrService.success(rentalResponse.message,"Başarılı")
+          },rentalResponseError=>{
+            if(rentalResponseError.error.Errors.length>0){
+              for (let i = 0; i < rentalResponseError.error.Errors.length; i++) {
+                this.toastrService.error(rentalResponseError.error.Errors[i].ErrorMessage,"Doğrulama Hatası")
+              }
+            }
           })
 
-          console.log(paymentResponse);
           this.toastrService.success("Ödeme Başarıyla Gerçekleşti", "Araç Kiralandı", {
             toastClass: 'toast ngx-toastr',
             closeButton: true
@@ -131,12 +134,12 @@ export class RentalAddComponent implements OnInit {
           setTimeout(() => {
             window.location.href = "/cars"
           }, 3000);
-        }, responseError => {
-          console.log(responseError.error);
-          this.toastrService.error("Kart Bilgileriniz Hatalı veya Limit Yetersiz", "Başarısız", {
-            toastClass: 'toast ngx-toastr',
-            closeButton: true
-          })
+        }, responseError=>{
+          if(responseError.error.Errors.length>0){
+            for (let i = 0; i < responseError.error.Errors.length; i++) {
+              this.toastrService.error(responseError.error.Errors[i].ErrorMessage,"Doğrulama Hatası")
+            }
+          }
         })
     }
     else{

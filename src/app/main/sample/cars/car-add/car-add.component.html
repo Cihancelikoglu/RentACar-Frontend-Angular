@@ -1,0 +1,91 @@
+<div class="content-wrapper container-xxl p-0">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+    <div class="content-body">
+        <section class="app-ecommerce-details">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row my-2">
+                        <div class="col-12">
+                            <form class="form form-horizontal" [formGroup]="carAddForm">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="mb-1 row">
+                                            <div class="col-sm-3">
+                                                <label class="col-form-label">Car Name</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <input type="text" id="carName" formControlName="carName" class="form-control" placeholder="Car Name" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="mb-1 row">
+                                            <div class="col-sm-3">
+                                                <label class="col-form-label">Select Brand</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <select class="form-control" formControlName="brandId">
+                                                    <option *ngFor="let brand of brands" [ngValue]="brand.id">
+                                                        {{ brand.brandName }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="mb-1 row">
+                                            <div class="col-sm-3">
+                                                <label class="col-form-label">Select Color</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <select class="form-control" formControlName="colorId">
+                                                    <option *ngFor="let color of colors" [ngValue]="color.id">
+                                                        {{ color.colorName }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="mb-1 row">
+                                            <div class="col-sm-3">
+                                                <label class="col-form-label">Model Year</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <input type="date" id="modelYear" formControlName="modelYear" class="form-control" placeholder="Model Year" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="mb-1 row">
+                                            <div class="col-sm-3">
+                                                <label class="col-form-label">Daily Price</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <input type="number" id="dailyPrice" formControlName="dailyPrice" class="form-control" placeholder="Daily Price" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="mb-1 row">
+                                            <div class="col-sm-3">
+                                                <label class="col-form-label">Description</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <input type="text" id="description" formControlName="description" class="form-control" placeholder="Description" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="mt-2 text-right">
+                                <button class="btn btn-primary" (click)="carAdd()">Ekle</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
