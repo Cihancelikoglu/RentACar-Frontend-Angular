@@ -50,6 +50,13 @@ export const menu: CoreMenu[] = [
         icon: 'file',
         url: 'rentals'
       },
+      {
+        id: 'rental',
+        title: 'Rent A Car',
+        type: 'item',
+        icon: 'file',
+        url: 'rental'
+      },
     ]
   },
 ]

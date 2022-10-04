@@ -1,100 +1,57 @@
-<div class="app-content ecommerce-application">
-  <div class="content-wrapper container-xxl p-0">
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <!-- content-header component -->
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
-    
-    <div class="row">
-      <div class="col-3">
-        <div class="sidebar">
-          <div class="sidebar-shop">
-            <div class="card">
-              <h4 class="text-left pl-1 pt-2">Seçenekler</h4>
-
-              <select class="btn-primary m-1 select-options" (change)="ChangeBrands($event)">
-                <option selected>Brands</option>
-                <option [value]="brand.id" *ngFor="let brand of brands" value="{{brand.Id}}">{{brand.brandName}}
-                </option>
-              </select>
-              <select class="btn-primary m-1 select-options" (change)="ChangeColors($event)">
-                <option selected>Colors</option>
-                <option [value]="color.id" *ngFor="let color of colors" value="{{color.Id}}">{{color.colorName}}
-                </option>
-              </select>
-              <button (click)="getCarFilter(selectedColor,selectedBrand)" class="btn btn-primary m-1"
-                type="button">Filtrele</button>
-            </div>
-          </div>
+    <div class="mb-2">
+      <div class="row">
+        <div class="col-6">
+          <input type="text" class="form-control" placeholder="Search Car" [(ngModel)]="filterText" id="filterText">
         </div>
-      </div>
-      <div class="col-9">
-        <div class="mb-2">
-          <div class="row">
-            <div class="col-4">
-              <div class="text-left">
-                <div ngbDropdown [placement]="'right-top'" class="btn-group dropright mr-1">
-                  <button *ngIf="!currentColor" ngbDropdownToggle type="button" class="btn btn-primary" rippleEffect>Select
-                    Color</button>
-                  <button *ngIf="currentColor" ngbDropdownToggle type="button" class="btn btn-primary"
-                    rippleEffect>{{currentColor.colorName}}</button>
-                  <div ngbDropdownMenu>
-                    <h6 class="dropdown-header">Colors</h6>
-                    <a ngbDropdownItem *ngFor="let color of colors" (click)="setCurrentColor(color)"
-                      routerLink="/cars/color/{{color.id}}">{{color.colorName}}</a>
-                  </div>
-                </div>
-                <div ngbDropdown [placement]="'right-top'" class="btn-group dropright mr-1">
-                  <button *ngIf="!currentBrand" ngbDropdownToggle type="button" class="btn btn-primary" rippleEffect>Select
-                    Brand</button>
-                  <button *ngIf="currentBrand" ngbDropdownToggle type="button" class="btn btn-primary"
-                    rippleEffect>{{currentBrand.brandName}}</button>
-                  <div ngbDropdownMenu>
-                    <h6 class="dropdown-header">Brands</h6>
-                    <a ngbDropdownItem *ngFor="let brand of brands" (click)="setCurrentBrand(brand)"
-                      routerLink="/cars/brand/{{brand.id}}">{{brand.brandName}}</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-5">
-              <input type="text" class="form-control mb-2" placeholder="Search Car" [(ngModel)]="filterText" id="filterText">
-            </div>
-            <div class="col-3 text-right">
-              <button routerLink="/cars/addcar" class="btn btn-primary" >Add Car</button>
-            </div>
-          </div>
-        </div>
-        <div class="content-body">
-          <section id="ecommerce-products" class="grid-view">
-            <div class="card ecommerce-card" *ngFor="let car of cars | filterCar:filterText">
-              <div class="item-img text-center">
-                <a routerLink="/cars/cardetail/{{car.carId}}">
-                  <img class="img-fluid card-img-top" src="{{baseImageUrl}}{{car.carImages}}"
-                    alt="img-placeholder" /></a>
-              </div>
-              <div class="card-body">
-                <div class="item-wrapper">
-                  <div>
-                    <h6 class="item-price">Gün / {{car.dailyPrice}} ₺</h6>
-                  </div>
-                </div>
-                <h6 class="item-name">
-                  <a class="text-body" routerLink="/cars/cardetail/{{car.carId}}">{{car.carName}}</a>
-                  <span class="card-text item-company">By <a class="company-name">{{car.brandName}}</a></span>
-                </h6>
-                <p class="card-text item-description">
-                  {{car.description}}
-                </p>
-              </div>
-              <div class="item-options text-center">
-                <div class="btn btn-light btn-wishlist">
-                </div>
-                <a routerLink="/cars/cardetail/{{car.carId}}" class="btn btn-primary btn-cart">
-                  <span class="add-to-cart">İncele</span>
-                </a>
-              </div>
-            </div>
-          </section>
+        <div class="col-6 text-right">
+          <button routerLink="/cars/addcar" class="btn btn-primary" >Add Car</button>
         </div>
       </div>
     </div>
+    <!-- Basic Alerts start -->
+    <section>
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body pb-1">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">Colors Id</th>
+                    <th scope="col">Car Name</th>
+                    <th scope="col">Brand Name</th>
+                    <th scope="col">Color Name</th>
+                    <th scope="col">Model Year</th>
+                    <th scope="col">Daily Price</th>
+                    <th scope="col">Daily Price</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let car of cars | filterCar:filterText">
+                    <th scope="row">{{car.carId}}</th>
+                    <td>{{car.carName}}</td>
+                    <td>{{car.brandName}}</td>
+                    <td>{{car.colorName}}</td>
+                    <td>{{car.modelYear}}</td>
+                    <td>{{car.dailyPrice}} ₺</td>
+                    <td>
+                      <a class="btn btn-success mr-1" routerLink="/cars/update/{{car.carId}}">Edit</a>
+                      <a class="btn btn-danger" (click)="delete(car)">Delete</a>
+                    </td>
+                    
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Basic Alerts end -->
   </div>
 </div>

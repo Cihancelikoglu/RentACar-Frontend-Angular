@@ -1,0 +1,44 @@
+<div class="content-wrapper container-xxl p-0">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+    <div class="content-body">
+      <section class="app-ecommerce-details">
+        <div class="card">
+          <div class="card-body">
+            <div class="row my-2">
+              <div
+                class="col-12 col-md-5 d-flex align-items-center justify-content-center mb-2 mb-md-0">
+                <swiper direction="horizontal" [pagination]="{ clickable: true }" [navigation]="true">
+                  <ng-container *ngFor="let carImage of carImages; let i = index">
+                    <ng-template swiperSlide>
+                      <img *ngIf="carImage.imagePath" class="img-fluid" src="{{baseImageUrl}}{{carImage.imagePath}}" />
+                    </ng-template>
+                  </ng-container>
+                </swiper>
+                <div  *ngFor="let carDetail of carDetails">
+                  <img *ngIf="!carDetail.carImages" class="img-fluid" src="../../../../../../assets/images/banner/banner-11.jpg" class="img-fluid" />
+                </div>
+              </div>
+              <div class="col-12 col-md-7">
+              <h4 *ngFor="let carDetail of carDetails">{{carDetail.carName}}</h4>
+                <span class="card-text item-company">By
+                  <a *ngFor="let carDetail of carDetails" class="company-name">{{carDetail.brandName}}</a></span>
+                <p class="card-text mt-1">
+                  Fiyat - <span *ngFor="let carDetail of carDetails" class="text-success">{{carDetail.dailyPrice}} ₺</span>
+                </p>
+                <hr />
+                <div class="product-color-options">
+                  <h6 *ngFor="let carDetail of carDetails">{{carDetail.description}}</h6>
+                </div>
+                <hr />
+                <app-rental-date-control></app-rental-date-control>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+  
+  
+  
+  

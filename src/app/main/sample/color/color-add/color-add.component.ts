@@ -58,10 +58,15 @@ export class ColorAddComponent implements OnInit {
           window.location.href = "/colors"
         }, 3000);
       },errorResponse=>{
-        if(errorResponse.error.Errors.length>0){
-          for (let i = 0; i < errorResponse.error.Errors.length; i++) {
-            this.toastrService.error(errorResponse.error.Errors[i].ErrorMessage,"Doğrulama Hatası")
+        if(errorResponse.error.Errors){
+          if(errorResponse.error.Errors.length>0){
+            for (let i = 0; i < errorResponse.error.Errors.length; i++) {
+              this.toastrService.error(errorResponse.error.Errors[i].ErrorMessage,"Doğrulama Hatası",{toastClass: 'toast ngx-toastr'})
+            }
           }
+        }
+        else{
+          this.toastrService.error(errorResponse.error.message,"Doğrulama Hatası",{toastClass: 'toast ngx-toastr'})
         }
       })
     }

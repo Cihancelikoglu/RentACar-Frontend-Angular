@@ -23,12 +23,17 @@
                   <tr>
                     <th scope="col">Colors Id</th>
                     <th scope="col">Colors</th>
+                    <th scope="col"></th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let color of colors | filterColor:filterText">
                     <th scope="row">{{color.id}}</th>
                     <td>{{color.colorName}}</td>
+                    <td>
+                      <a class="btn btn-success mr-1" routerLink="/colors/update/{{color.id}}">Edit</a>
+                      <a class="btn btn-danger" (click)="delete(color)">Delete</a>
+                    </td>
                   </tr>
                 </tbody>
               </table>

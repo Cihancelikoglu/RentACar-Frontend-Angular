@@ -26,10 +26,10 @@
                     <th scope="row">{{rental.carId}}</th>
                     <td>{{rental.carName}}</td>
                     <td>{{rental.customerName}}</td>
-                    <td>{{rental.rentDate}}</td>
-                    <td>{{rental.returnDate}}</td>
+                    <td>{{rental.rentDate  | date:"short"}}</td>
+                    <td>{{rental.returnDate | date:"short"}}</td>
                     <td>{{rental.totalDay}}</td>
-                    <td>{{rental.totalPrice}}</td>
+                    <td>{{rental.totalPrice | currency: "TRY":"TL":"4.2-2"}}</td>
                   </tr>
                 </tbody>
               </table>

@@ -5,7 +5,7 @@
       <div class="mb-2">
         <div class="row">
           <div class="col-6">
-            <input type="text" class="form-control" placeholder="Search Color" [(ngModel)]="filterText" id="filterText">
+            <input type="text" class="form-control" placeholder="Search Brand" [(ngModel)]="filterText" id="filterText">
           </div>
           <div class="col-6 text-right">
             <button routerLink="/brands/addbrand" class="btn btn-primary" >Add Brand</button>
@@ -23,12 +23,17 @@
                     <tr>
                       <th scope="col">Brands Id</th>
                       <th scope="col">Brands Name</th>
+                      <th scope="col"></th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let brand of brands | filterBrand:filterText">
                       <th scope="row">{{brand.id}}</th>
                       <td>{{brand.brandName | uppercase}}</td>
+                      <td>
+                        <a class="btn btn-success mr-1" routerLink="/brands/update/{{brand.id}}">Edit</a>
+                        <a class="btn btn-danger" (click)="delete(brand)">Delete</a>
+                      </td>
                     </tr>
                   </tbody>
                 </table>

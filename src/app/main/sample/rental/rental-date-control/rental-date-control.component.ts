@@ -77,14 +77,19 @@ export class RentalDateControlComponent implements OnInit {
         }
 
         setTimeout(() => {
-          window.location.href = "/cars/rental/" + this.carIdUrl;
+          window.location.href = "/rental/" + this.carIdUrl;
         }, 3000);
 
-      },rentalResponseError=>{
-        if(rentalResponseError.error.Errors.length>0){
-          for (let i = 0; i < rentalResponseError.error.Errors.length; i++) {
-            this.toastrService.error(rentalResponseError.error.Errors[i].ErrorMessage,"Doğrulama Hatası")
+      },errorResponse=>{
+        if(errorResponse.error.Errors){
+          if(errorResponse.error.Errors.length>0){
+            for (let i = 0; i < errorResponse.error.Errors.length; i++) {
+              this.toastrService.error(errorResponse.error.Errors[i].ErrorMessage,"Doğrulama Hatası",{toastClass: 'toast ngx-toastr'})
+            }
           }
+        }
+        else{
+          this.toastrService.error(errorResponse.error.message,"Doğrulama Hatası",{toastClass: 'toast ngx-toastr'})
         }
       })
     }

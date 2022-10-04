@@ -26,6 +26,21 @@ export class CarService {
     return this.httpClient.post<ResponseModel>(newPath,car);
   }
 
+  updateCar(car:Car): Observable<ResponseModel> {
+    let newPath = this.apiUrl + "/cars/update";
+    return this.httpClient.post<ResponseModel>(newPath,car);
+  }
+
+  deleteCar(car:Car): Observable<ResponseModel> {
+    let newPath = this.apiUrl + "/cars/delete";
+    return this.httpClient.post<ResponseModel>(newPath,car);
+  }
+
+  getByIdCar(carId:number): Observable<ListResponseModel<Car>> {
+    let newPath = this.apiUrl + "/cars/getbyid?carId="+carId;
+    return this.httpClient.get<ListResponseModel<Car>>(newPath);
+  }
+
   getCarsByColor(colorId: number): Observable<ListResponseModel<CarDetailDto>> {
     let newPath =
       this.apiUrl + "/cars/getbycolor?colorId=" + colorId;

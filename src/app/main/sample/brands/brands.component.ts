@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Brand } from 'app/models/brand';
 import { BrandService } from 'app/services/brand/brand.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-brands',
@@ -12,7 +13,10 @@ export class BrandsComponent implements OnInit {
   dataLoaded = false;
   filterText="";
 
-  constructor(private brandService:BrandService) { }
+  constructor(
+    private brandService:BrandService,
+    private toastrService:ToastrService
+    ) { }
 
   public contentHeader: object
 
@@ -40,10 +44,26 @@ export class BrandsComponent implements OnInit {
         }
       }
     }
+
     getBrands() {
       this.brandService.getBrands().subscribe(response=>{
         this.brands = response.data;
         this.dataLoaded = true;
+      })
+    }
+
+    delete(brand:Brand){
+      if (window.confirm("Silmek istediğinizden emin misiniz?")) {
+        this.brandDelete(brand)
+      }
+    }
+
+    brandDelete(brand:Brand){
+      this.brandService.deleteBrand(brand).subscribe(response=>{
+        this.toastrService.success(response.message,"Başarılı")
+        setTimeout(() => {
+          window.location.href = "/brands"
+        }, 2000);
       })
     }
 }

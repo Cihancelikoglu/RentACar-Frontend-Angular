@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Color } from 'app/models/color';
 import { ColorService } from 'app/services/color/color.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-color',
@@ -12,7 +13,8 @@ export class ColorComponent implements OnInit {
   dataLoaded = false;
   filterText="";
 
-  constructor(private colorService:ColorService) { }
+  constructor(private colorService:ColorService,
+    private toastrService:ToastrService) { }
 
   public contentHeader: object
 
@@ -45,6 +47,21 @@ export class ColorComponent implements OnInit {
     this.colorService.getColors().subscribe(response=>{
       this.colors = response.data;
       this.dataLoaded = true;
+    })
+  }
+
+  delete(color:Color){
+    if (window.confirm("Silmek istediğinizden emin misiniz?")) {
+      this.colorDelete(color)
+    }
+  }
+
+  colorDelete(color:Color){
+    this.colorService.deleteColor(color).subscribe(response=>{
+      this.toastrService.success(response.message,"Başarılı")
+      setTimeout(() => {
+        window.location.href = "/colors"
+      }, 2000);
     })
   }
 

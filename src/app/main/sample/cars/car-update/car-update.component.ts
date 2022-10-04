@@ -6,14 +6,17 @@ import { BrandService } from 'app/services/brand/brand.service';
 import { CarService } from 'app/services/car/car.service';
 import { ColorService } from 'app/services/color/color.service';
 import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute } from '@angular/router';
+import { Car } from 'app/models/car';
 
 @Component({
-  selector: 'app-car-add',
-  templateUrl: './car-add.component.html',
-  styleUrls: ['./car-add.component.scss']
+  selector: 'app-car-update',
+  templateUrl: './car-update.component.html',
+  styleUrls: ['./car-update.component.scss']
 })
-export class CarAddComponent implements OnInit {
-  carAddForm:FormGroup;
+export class CarUpdateComponent implements OnInit {
+  carUpdateForm:FormGroup;
+  car:Car;
   colors:Color[] = [];
   brands:Brand[] = [];
 
@@ -22,17 +25,19 @@ export class CarAddComponent implements OnInit {
     private carService:CarService,
     private toastrService:ToastrService,
     private colorService:ColorService,
-    private brandService:BrandService
+    private brandService:BrandService,
+    private router:ActivatedRoute,
   ) { }
   public contentHeader: object;
 
   ngOnInit(): void {
-    this.careateCarAddForm();
-    this.getBrands();
     this.getColors();
+    this.getBrands();
+    this.getByIdCar();
+    this.careateCarUpdateForm();
 
     this.contentHeader = {
-      headerTitle: "Car Add",
+      headerTitle: "Car Update",
       actionButton: true,
       breadcrumb: {
         type: "",
@@ -43,7 +48,12 @@ export class CarAddComponent implements OnInit {
             link: "/",
           },
           {
-            name: "Car Add",
+            name: "Cars",
+            isLink: true,
+            link: "/cars",
+          },
+          {
+            name: "Car Update",
             isLink: false,
           }
         ],
@@ -51,25 +61,23 @@ export class CarAddComponent implements OnInit {
     };
   }
 
-
-  careateCarAddForm(){
-    this.carAddForm = this.formBuilder.group({
-      brandId:["",Validators.required],
-      colorId:["",Validators.required],
-      carName:["",Validators.required],
-      modelYear:["",Validators.required],
-      dailyPrice:["",Validators.required],
-      description:["",Validators.required]
+  careateCarUpdateForm(){
+    this.carUpdateForm = this.formBuilder.group({
+      brandId:[this.car.brandId,Validators.required],
+      colorId:[this.car.colorId,Validators.required],
+      carName:[this.car.carName,Validators.required],
+      modelYear:[this.car.modelYear,Validators.required],
+      dailyPrice:[this.car.dailyPrice,Validators.required],
+      description:[this.car.description,Validators.required]
     })
   }
 
-  carAdd(){
-    if(this.carAddForm.valid){
-      let carModel = Object.assign({},this.carAddForm.value)
-      this.carService.addCar(carModel).subscribe(response=>{
+  carUpdate() {
+    if(this.carUpdateForm.valid){
+      let carModel: Car = { carId: this.car.carId, ...this.carUpdateForm.value };
+      this.carService.updateCar(carModel).subscribe(response=>{
         this.toastrService.success(response.message,"Başarılı")
         setTimeout(() => {
-          this.carAddForm.reset();
           window.location.href = "/cars"
         }, 3000);
       },errorResponse=>{
@@ -90,6 +98,14 @@ export class CarAddComponent implements OnInit {
     }
   }
 
+
+  getByIdCar(){
+    this.carService.getByIdCar(this.router.snapshot.params.carId).subscribe((response:any)=>{
+      this.car = response.data;
+      this.careateCarUpdateForm();
+    })
+  }
+
   getColors() {
     this.colorService.getColors().subscribe((response) => {
       this.colors = response.data;
@@ -101,5 +117,4 @@ export class CarAddComponent implements OnInit {
       this.brands = response.data;
     });
   }
-
 }
