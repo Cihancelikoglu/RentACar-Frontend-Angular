@@ -26,7 +26,6 @@ export class ColorUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.getByIdColor();
     this.careateColorUpdateForm();
-    console.log(this.router.snapshot.params.colorId)
 
     this.contentHeader = {
       headerTitle: 'Colors',
@@ -58,7 +57,7 @@ export class ColorUpdateComponent implements OnInit {
     if(this.colorUpdateForm.valid){
       let colorModel: Color = { id: this.color.id, ...this.colorUpdateForm.value };
       this.colorService.updateCar(colorModel).subscribe(response=>{
-        this.toastrService.success(response.message,"Başarılı")
+        this.toastrService.error(response.message,"Başarılı",{toastClass: 'toast ngx-toastr'})
         setTimeout(() => {
           window.location.href = "/colors"
         }, 3000);

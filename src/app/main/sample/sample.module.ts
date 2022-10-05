@@ -33,6 +33,8 @@ import { CarUpdateComponent } from './cars/car-update/car-update.component';
 import { ColorUpdateComponent } from './color/color-update/color-update.component';
 import { BrandUpdateComponent } from './brands/brand-update/brand-update.component';
 import { SplitPipe } from 'app/pipes/split.pipe';
+import { ImgGalleryComponent } from './img-gallery/img-gallery.component';
+import { GalleryAddComponent } from './img-gallery/gallery-add/gallery-add.component';
 
 const routes = [
   {
@@ -77,12 +79,15 @@ const routes = [
 
   { path: "cars/addcar", component: CarAddComponent },
   { path: "cars/update/:carId", component: CarUpdateComponent },
+  { path: "cars/gallery/:carId", component: ImgGalleryComponent },
+  { path: "cars/galleryadd/:carId", component: GalleryAddComponent },
   
   { path: "colors/addcolor", component: ColorAddComponent },
   { path: "colors/update/:colorId", component: ColorUpdateComponent },
 
   { path: "brands/addbrand", component: BrandAddComponent },
   { path: "brands/update/:brandId", component: BrandUpdateComponent },
+
 ];
 
 @NgModule({
@@ -107,7 +112,9 @@ const routes = [
     RentalDetailComponent,
     CarUpdateComponent,
     ColorUpdateComponent,
-    BrandUpdateComponent],
+    BrandUpdateComponent,
+    ImgGalleryComponent,
+    GalleryAddComponent],
   imports: [RouterModule.forChild(routes), ContentHeaderModule, TranslateModule, CoreCommonModule, SwiperModule, NgbModule, FormsModule, BrowserAnimationsModule,
   NgxMaskModule.forRoot(),
   ToastrModule.forRoot()

@@ -52,7 +52,7 @@ export class ColorAddComponent implements OnInit {
       let colorModel = Object.assign({},this.colorAddForm.value)
       this.colorService.addColor(colorModel).subscribe(response=>{
         console.log(colorModel)
-        this.toastrService.success(response.message,"Başarılı")
+        this.toastrService.error(response.message,"Başarılı",{toastClass: 'toast ngx-toastr'})
         setTimeout(() => {
           this.colorAddForm.reset();
           window.location.href = "/colors"

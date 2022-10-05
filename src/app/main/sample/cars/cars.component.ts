@@ -69,7 +69,7 @@ export class CarsComponent implements OnInit {
 
   carDelete(car:Car){
     this.carService.deleteCar(car).subscribe(response=>{
-      this.toastrService.success(response.message,"Başarılı")
+      this.toastrService.error(response.message,"Başarılı",{toastClass: 'toast ngx-toastr'})
       setTimeout(() => {
         window.location.href = "/cars"
       }, 2000);

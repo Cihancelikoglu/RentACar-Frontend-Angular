@@ -58,7 +58,7 @@ export class ColorComponent implements OnInit {
 
   colorDelete(color:Color){
     this.colorService.deleteColor(color).subscribe(response=>{
-      this.toastrService.success(response.message,"Başarılı")
+      this.toastrService.error(response.message,"Başarılı",{toastClass: 'toast ngx-toastr'})
       setTimeout(() => {
         window.location.href = "/colors"
       }, 2000);

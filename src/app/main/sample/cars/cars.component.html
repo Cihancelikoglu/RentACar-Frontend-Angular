@@ -41,7 +41,8 @@
                     <td>{{car.dailyPrice}} ₺</td>
                     <td>
                       <a class="btn btn-success mr-1" routerLink="/cars/update/{{car.carId}}">Edit</a>
-                      <a class="btn btn-danger" (click)="delete(car)">Delete</a>
+                      <a class="btn btn-danger mr-1" (click)="delete(car)">Delete</a>
+                      <a class="btn btn-primary mr-1" routerLink="/cars/gallery/{{car.carId}}">Gallery</a>
                     </td>
                     
                   </tr>

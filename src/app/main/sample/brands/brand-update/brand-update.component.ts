@@ -62,7 +62,7 @@ export class BrandUpdateComponent implements OnInit {
     if(this.brandUpdateForm.valid){
       let brandModel: Brand = { id: this.brand.id, ...this.brandUpdateForm.value };
       this.brandService.updateBrand(brandModel).subscribe(response=>{
-        this.toastrService.success(response.message,"Başarılı")
+        this.toastrService.error(response.message,"Başarılı",{toastClass: 'toast ngx-toastr'})
         setTimeout(() => {
           window.location.href = "/brands"
         }, 3000);

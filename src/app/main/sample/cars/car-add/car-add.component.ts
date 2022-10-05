@@ -67,7 +67,7 @@ export class CarAddComponent implements OnInit {
     if(this.carAddForm.valid){
       let carModel = Object.assign({},this.carAddForm.value)
       this.carService.addCar(carModel).subscribe(response=>{
-        this.toastrService.success(response.message,"Başarılı")
+        this.toastrService.error(response.message,"Başarılı",{toastClass: 'toast ngx-toastr'})
         setTimeout(() => {
           this.carAddForm.reset();
           window.location.href = "/cars"
