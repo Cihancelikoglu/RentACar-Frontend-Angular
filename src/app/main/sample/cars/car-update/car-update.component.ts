@@ -36,6 +36,8 @@ export class CarUpdateComponent implements OnInit {
     this.getByIdCar();
     this.careateCarUpdateForm();
 
+   
+
     this.contentHeader = {
       headerTitle: "Car Update",
       actionButton: true,
@@ -74,9 +76,9 @@ export class CarUpdateComponent implements OnInit {
 
   carUpdate() {
     if(this.carUpdateForm.valid){
-      let carModel: Car = { carId: this.car.carId, ...this.carUpdateForm.value };
+      let carModel = Object.assign({carId: this.car.carId},this.carUpdateForm.value)
       this.carService.updateCar(carModel).subscribe(response=>{
-        this.toastrService.error(response.message,"Başarılı",{toastClass: 'toast ngx-toastr'})
+        this.toastrService.success(response.message,"Başarılı",{toastClass: 'toast ngx-toastr'})
         setTimeout(() => {
           window.location.href = "/cars"
         }, 3000);

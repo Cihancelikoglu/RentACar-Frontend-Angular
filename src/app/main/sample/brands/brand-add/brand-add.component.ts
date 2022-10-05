@@ -52,7 +52,7 @@ export class BrandAddComponent implements OnInit {
       let brandModel = Object.assign({},this.brandAddForm.value)
       this.brandService.addBrand(brandModel).subscribe(response=>{
         console.log(brandModel)
-        this.toastrService.error(response.message,"Başarılı",{toastClass: 'toast ngx-toastr'})
+        this.toastrService.success(response.message, "Başarılı", { toastClass: 'toast ngx-toastr' })
         setTimeout(() => {
           this.brandAddForm.reset();
           window.location.href = "/brands"

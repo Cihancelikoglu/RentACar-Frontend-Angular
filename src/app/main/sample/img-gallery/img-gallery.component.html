@@ -15,7 +15,7 @@
               <div class="col-12 col-md-3 align-items-center justify-content-center mb-2 mb-md-0" *ngFor="let carImage of carImages;">
                 <img *ngIf="carImage.imagePath" class="img-fluid" src="{{baseImageUrl}}{{carImage.imagePath}}" />
                 <div class="text-center mt-2">
-                  <a routerLink="/colors/update/{{carImage.id}}" class="btn btn-success mr-2">Update</a>
+                  <a routerLink="/cars/galleryupdate/{{carImage.id}}" class="btn btn-success mr-2">Update</a>
                   <a class="btn btn-danger" (click)="delete(carImage)">Delete</a>
                 </div>
               </div>

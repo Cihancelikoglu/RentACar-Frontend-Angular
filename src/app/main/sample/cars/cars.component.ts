@@ -18,12 +18,6 @@ export class CarsComponent implements OnInit {
   baseImageUrl = "https://localhost:44330/Uploads/Images/"
   filterText="";
 
-  currentBrand:Brand;
-  currentColor:Color;
-
-  selectedColor:any;
-  selectedBrand:any;
-
   constructor(
     private carService: CarService,
     private toastrService:ToastrService,
@@ -69,7 +63,7 @@ export class CarsComponent implements OnInit {
 
   carDelete(car:Car){
     this.carService.deleteCar(car).subscribe(response=>{
-      this.toastrService.error(response.message,"Başarılı",{toastClass: 'toast ngx-toastr'})
+      this.toastrService.success(response.message,"Başarılı",{toastClass: 'toast ngx-toastr'})
       setTimeout(() => {
         window.location.href = "/cars"
       }, 2000);

@@ -76,7 +76,7 @@ export class ImgGalleryComponent implements OnInit {
 
   deleteImage(carImage:CarImages){
     this.carImageService.deleteImage(carImage).subscribe(response=>{
-      this.toastrService.error(response.message,"Başarılı",{toastClass: 'toast ngx-toastr'})
+      this.toastrService.success(response.message,"Başarılı",{toastClass: 'toast ngx-toastr'})
       setTimeout(() => {
         window.location.href = "/cars/gallery/"+carImage.carId
       }, 2000);

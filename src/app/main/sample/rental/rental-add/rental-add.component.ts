@@ -117,7 +117,7 @@ export class RentalAddComponent implements OnInit {
         
         this.creditCartService.peymentControl(paymentModel).subscribe(paymentResponse => {
           this.rentalService.addRentals(rentalModel).subscribe(rentalResponse=>{
-            this.toastrService.error(rentalResponse.message,"Başarılı",{toastClass: 'toast ngx-toastr'})
+            this.toastrService.success(rentalResponse.message, "Başarılı", { toastClass: 'toast ngx-toastr' })
           },errorResponse=>{
             if(errorResponse.error.Errors){
               if(errorResponse.error.Errors.length>0){

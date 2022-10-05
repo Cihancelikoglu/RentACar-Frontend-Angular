@@ -60,7 +60,7 @@ export class BrandsComponent implements OnInit {
 
     brandDelete(brand:Brand){
       this.brandService.deleteBrand(brand).subscribe(response=>{
-        this.toastrService.error(response.message,"Başarılı",{toastClass: 'toast ngx-toastr'})
+        this.toastrService.success(response.message,"Başarılı",{toastClass: 'toast ngx-toastr'})
         setTimeout(() => {
           window.location.href = "/brands"
         }, 2000);

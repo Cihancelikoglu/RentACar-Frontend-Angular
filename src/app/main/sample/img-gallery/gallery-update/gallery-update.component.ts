@@ -6,12 +6,15 @@ import { CarimageService } from 'app/services/carImages/carimage.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-gallery-add',
-  templateUrl: './gallery-add.component.html',
-  styleUrls: ['./gallery-add.component.scss']
+  selector: 'app-gallery-update',
+  templateUrl: './gallery-update.component.html',
+  styleUrls: ['./gallery-update.component.scss']
 })
-export class GalleryAddComponent implements OnInit {
-  imageAddForm: FormGroup
+export class GalleryUpdateComponent implements OnInit {
+  imageUpdateForm: FormGroup
+  carImage: CarImages;
+  carIdd: number
+  baseImageUrl = "https://localhost:44330/Uploads/Images/"
 
   constructor(
     private carImageService: CarimageService,
@@ -22,10 +25,11 @@ export class GalleryAddComponent implements OnInit {
   public contentHeader: object;
 
   ngOnInit(): void {
-    this.careateimageAddForm();
+    this.careateImageUpdateForm();
+    this.getByIdImage();
 
     this.contentHeader = {
-      headerTitle: "Add Image",
+      headerTitle: "Car Update",
       actionButton: true,
       breadcrumb: {
         type: "",
@@ -41,41 +45,40 @@ export class GalleryAddComponent implements OnInit {
             link: "/cars",
           },
           {
-            name: "Add Image",
+            name: "Car Update",
             isLink: false,
-          },
+          }
         ],
       },
     };
   }
 
-  careateimageAddForm() {
-    this.imageAddForm = this.formBuilder.group({
+  careateImageUpdateForm() {
+    this.imageUpdateForm = this.formBuilder.group({
       file: ["", Validators.required],
     })
   }
 
-  // on file select event
   onFileChange(event) {
     if (event.target.files.length > 0) {
       const file = (event.target as HTMLInputElement).files[0];
-      this.imageAddForm.patchValue({
+      this.imageUpdateForm.patchValue({
         file: file
       });
     }
   }
 
-  imageAdd() {
-    if (this.imageAddForm.valid) {
-      
+  imageUpdate() {
+    if (this.imageUpdateForm.valid) {
       const formData = new FormData();
-      formData.append('carId', this.router.snapshot.params.carId);
-      formData.append('file', this.imageAddForm.get('file').value);
+      formData.append('id', this.router.snapshot.params.id);
+      formData.append('carId', (this.carIdd.toString()));
+      formData.append('file', this.imageUpdateForm.get('file').value);
 
-      this.carImageService.addImage(formData).subscribe(response => {
+      this.carImageService.updateImage(formData).subscribe(response => {
         this.toastrService.success(response.message, "Başarılı", { toastClass: 'toast ngx-toastr' })
         setTimeout(() => {
-          window.location.href = "/cars/gallery/"+this.router.snapshot.params.carId
+          window.location.href = "/cars/gallery/" + this.carIdd
         }, 3000);
       }, errorResponse => {
         if (errorResponse.error.Errors) {
@@ -94,5 +97,14 @@ export class GalleryAddComponent implements OnInit {
       this.toastrService.error("Formunuz Eksik", "Dikkat")
     }
   }
+
+  getByIdImage() {
+    this.carImageService.getByImageId(this.router.snapshot.params.id).subscribe((response: any) => {
+      this.carImage = response.data;
+      this.carIdd = this.carImage.carId
+      this.careateImageUpdateForm();
+    })
+  }
+
 
 }

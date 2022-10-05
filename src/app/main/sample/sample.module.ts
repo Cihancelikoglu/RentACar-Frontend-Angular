@@ -14,7 +14,6 @@ import { BrandsComponent } from './brands/brands.component';
 import { CustomerComponent } from './customer/customer.component';
 import { ColorComponent } from './color/color.component';
 import { RentalsComponent } from './rentals/rentals.component';
-import { CarDetailComponent } from './cars/carDetail/car-detail/car-detail.component';
 import { SwiperModule } from "swiper/angular";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FilterBrandPipe } from '../../pipes/filter-brand.pipe';
@@ -35,6 +34,7 @@ import { BrandUpdateComponent } from './brands/brand-update/brand-update.compone
 import { SplitPipe } from 'app/pipes/split.pipe';
 import { ImgGalleryComponent } from './img-gallery/img-gallery.component';
 import { GalleryAddComponent } from './img-gallery/gallery-add/gallery-add.component';
+import { GalleryUpdateComponent } from './img-gallery/gallery-update/gallery-update.component';
 
 const routes = [
   {
@@ -81,6 +81,7 @@ const routes = [
   { path: "cars/update/:carId", component: CarUpdateComponent },
   { path: "cars/gallery/:carId", component: ImgGalleryComponent },
   { path: "cars/galleryadd/:carId", component: GalleryAddComponent },
+  { path: "cars/galleryupdate/:id", component: GalleryUpdateComponent },
   
   { path: "colors/addcolor", component: ColorAddComponent },
   { path: "colors/update/:colorId", component: ColorUpdateComponent },
@@ -98,7 +99,6 @@ const routes = [
     CustomerComponent,
     ColorComponent,
     RentalsComponent,
-    CarDetailComponent,
     FilterBrandPipe,
     FilterCarPipe,
     FilterColorPipe,
@@ -114,7 +114,8 @@ const routes = [
     ColorUpdateComponent,
     BrandUpdateComponent,
     ImgGalleryComponent,
-    GalleryAddComponent],
+    GalleryAddComponent,
+    GalleryUpdateComponent],
   imports: [RouterModule.forChild(routes), ContentHeaderModule, TranslateModule, CoreCommonModule, SwiperModule, NgbModule, FormsModule, BrowserAnimationsModule,
   NgxMaskModule.forRoot(),
   ToastrModule.forRoot()
