@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CarimageService {
-  apiUrl = "https://localhost:44330/api";
+  apiUrl = "https://demotakipet.website/api";
 
   constructor(private httpClient:HttpClient) { }
 

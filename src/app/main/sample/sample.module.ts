@@ -35,6 +35,10 @@ import { SplitPipe } from 'app/pipes/split.pipe';
 import { ImgGalleryComponent } from './img-gallery/img-gallery.component';
 import { GalleryAddComponent } from './img-gallery/gallery-add/gallery-add.component';
 import { GalleryUpdateComponent } from './img-gallery/gallery-update/gallery-update.component';
+import { LoginComponent } from './login/login.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { LoginGuard } from './guards/login.guard';
 
 const routes = [
   {
@@ -72,23 +76,24 @@ const routes = [
     component: RentalComponent,
     data: { animation: 'rental' }
   },
-  { path: "rental/rentaldetail/:carId", component: RentalDetailComponent },
-  { path: "rental/color/:colorId", component: RentalComponent },
-  { path: "rental/brand/:brandId", component: RentalComponent },
-  { path: "rental/:carId", component: RentalAddComponent },
+  { path: "rental/rentaldetail/:carId", component: RentalDetailComponent, canActivate:[LoginGuard] },
+  { path: "rental/color/:colorId", component: RentalComponent},
+  { path: "rental/brand/:brandId", component: RentalComponent},
+  { path: "rental/:carId", component: RentalAddComponent, canActivate:[LoginGuard] },
 
-  { path: "cars/addcar", component: CarAddComponent },
-  { path: "cars/update/:carId", component: CarUpdateComponent },
-  { path: "cars/gallery/:carId", component: ImgGalleryComponent },
-  { path: "cars/galleryadd/:carId", component: GalleryAddComponent },
-  { path: "cars/galleryupdate/:id", component: GalleryUpdateComponent },
+  { path: "cars/addcar", component: CarAddComponent, canActivate:[LoginGuard] },
+  { path: "cars/update/:carId", component: CarUpdateComponent, canActivate:[LoginGuard] },
+  { path: "cars/gallery/:carId", component: ImgGalleryComponent, canActivate:[LoginGuard] },
+  { path: "cars/galleryadd/:carId", component: GalleryAddComponent, canActivate:[LoginGuard] },
+  { path: "cars/galleryupdate/:id", component: GalleryUpdateComponent, canActivate:[LoginGuard] },
   
-  { path: "colors/addcolor", component: ColorAddComponent },
-  { path: "colors/update/:colorId", component: ColorUpdateComponent },
+  { path: "colors/addcolor", component: ColorAddComponent, canActivate:[LoginGuard] },
+  { path: "colors/update/:colorId", component: ColorUpdateComponent, canActivate:[LoginGuard] },
 
-  { path: "brands/addbrand", component: BrandAddComponent },
-  { path: "brands/update/:brandId", component: BrandUpdateComponent },
+  { path: "brands/addbrand", component: BrandAddComponent, canActivate:[LoginGuard] },
+  { path: "brands/update/:brandId", component: BrandUpdateComponent, canActivate:[LoginGuard] },
 
+  {path:"login", component:LoginComponent},
 ];
 
 @NgModule({
@@ -115,10 +120,14 @@ const routes = [
     BrandUpdateComponent,
     ImgGalleryComponent,
     GalleryAddComponent,
-    GalleryUpdateComponent],
+    GalleryUpdateComponent,
+    LoginComponent],
   imports: [RouterModule.forChild(routes), ContentHeaderModule, TranslateModule, CoreCommonModule, SwiperModule, NgbModule, FormsModule, BrowserAnimationsModule,
   NgxMaskModule.forRoot(),
   ToastrModule.forRoot()
+  ],
+  providers: [
+    {provide:HTTP_INTERCEPTORS, useClass:AuthInterceptor,multi:true}
   ],
   exports: [HomeComponent]
 })

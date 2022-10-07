@@ -12,7 +12,7 @@ import { Car } from "app/models/car";
   providedIn: "root",
 })
 export class CarService {
-  apiUrl = "https://localhost:44330/api";
+  apiUrl = "https://demotakipet.website/api";
 
   constructor(private httpClient: HttpClient) { }
 

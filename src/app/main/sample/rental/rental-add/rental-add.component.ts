@@ -21,7 +21,7 @@ export class RentalAddComponent implements OnInit {
   paymentAddForm :FormGroup
   carDetails: CarDetailDto[] = [];
   carImages: CarImages[] = [];
-  baseImageUrl = "https://localhost:44330/Uploads/Images/"
+  baseImageUrl = "https://demotakipet.website/Uploads/Images/"
   parivatecarId:number;
   rentals: RentalDate[] = [];
   

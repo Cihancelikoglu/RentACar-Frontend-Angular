@@ -14,7 +14,7 @@ export class GalleryUpdateComponent implements OnInit {
   imageUpdateForm: FormGroup
   carImage: CarImages;
   carIdd: number
-  baseImageUrl = "https://localhost:44330/Uploads/Images/"
+  baseImageUrl = "https://demotakipet.website/Uploads/Images/"
 
   constructor(
     private carImageService: CarimageService,

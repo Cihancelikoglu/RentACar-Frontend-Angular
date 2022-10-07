@@ -11,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ImgGalleryComponent implements OnInit {
   carImages: CarImages[] = [];
-  baseImageUrl = "https://localhost:44330/Uploads/Images/"
+  baseImageUrl = "https://demotakipet.website/Uploads/Images/"
   carIdUrl:number;
 
   constructor(

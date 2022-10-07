@@ -6,7 +6,7 @@ import { CreditCart } from 'app/models/creditCart';
   providedIn: 'root'
 })
 export class CreditCartService {
-  apiUrl = "https://localhost:44330";
+  apiUrl = "https://demotakipet.website";
   constructor(private httpClient:HttpClient) { }
 
 

@@ -12,7 +12,7 @@ import { Observable } from "rxjs";
   providedIn: "root",
 })
 export class RentalService {
-  apiUrl = "https://localhost:44330";
+  apiUrl = "https://demotakipet.website";
 
   constructor(private httpClient: HttpClient) {}
 

@@ -7,6 +7,7 @@ import { RentalDate } from 'app/models/rentalDate';
 import { RentalDates } from 'app/models/rentalDates';
 import { RentalDetailDto } from 'app/models/rentalDetailDto';
 import { CarDetailService } from 'app/services/carDetail/car-detail.service';
+import { LocalStorageService } from 'app/services/localStorage/local-storage.service';
 import { RentalService } from 'app/services/rental/rental.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -22,6 +23,10 @@ export class RentalDateControlComponent implements OnInit {
   rentals: RentalDate[] = [];
   rentDatee: Date;
   returnDatee: Date;
+  eventStartTime:Date;
+  eventEndTime:Date;
+  rentalPeriod = 0;
+  setErrorResponse:any;
 
   constructor(
     private rentalService: RentalService,
@@ -29,7 +34,8 @@ export class RentalDateControlComponent implements OnInit {
     private toastrService: ToastrService,
     private modalService: NgbModal,
     private carDetailService: CarDetailService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private localStorage:LocalStorageService
   ) { }
 
   ngOnInit(): void {
@@ -58,39 +64,19 @@ export class RentalDateControlComponent implements OnInit {
     if (this.rentalAddForm.valid) {
       let rentalModel = Object.assign({}, this.rentalAddForm.value)
       this.rentalService.rentalDateControl(rentalModel).subscribe(response => {
-        console.log(response);
         this.toastrService.success(response.message,"Yönlendiriliyorsunuz", { toastClass: 'toast ngx-toastr', closeButton: true })
 
-        var eventStartTime = new Date(this.rentDatee);
-        var eventEndTime = new Date(this.returnDatee);
-        var rentalPeriod: number = Math.floor((eventEndTime.valueOf() - eventStartTime.valueOf()) / (1000 * 60 * 60 * 24));
-
-        this.rentalService.addToRentalDetail(car, this.rentDatee, this.returnDatee, rentalPeriod);
+        this.totalRentDate()
+        this.rentalService.addToRentalDetail(car, this.rentDatee, this.returnDatee, this.rentalPeriod);
         this.rentals = this.rentalService.listRentalDetail();
-
-        if (!localStorage.getItem('RentalsDetail')) {
-          localStorage.setItem('RentalsDetail', JSON.stringify(this.rentals));
-        }
-        else {
-          localStorage.setItem('RentalsDetail', JSON.stringify(this.rentals));
-          this.rentals = JSON.parse(localStorage.getItem('RentalsDetail'))
-        }
-
+        this.addLocalStorage()
         setTimeout(() => {
           window.location.href = "/rental/" + this.carIdUrl;
         }, 3000);
 
       },errorResponse=>{
-        if(errorResponse.error.Errors){
-          if(errorResponse.error.Errors.length>0){
-            for (let i = 0; i < errorResponse.error.Errors.length; i++) {
-              this.toastrService.error(errorResponse.error.Errors[i].ErrorMessage,"Doğrulama Hatası",{toastClass: 'toast ngx-toastr'})
-            }
-          }
-        }
-        else{
-          this.toastrService.error(errorResponse.error.message,"Doğrulama Hatası",{toastClass: 'toast ngx-toastr'})
-        }
+        this.setErrorResponse = errorResponse;
+        this.errorResponseMethod()
       })
     }
     else {
@@ -101,10 +87,40 @@ export class RentalDateControlComponent implements OnInit {
     }
   }
 
+  
   getCarDetails(carId: number) {
     this.carDetailService.getCarDetails(carId).subscribe((response) => {
       this.carDetails = response.data;
     });
+  }
+
+  addLocalStorage(){
+    if (!localStorage.getItem('RentalsDetail')) {
+      this.localStorage.addLocalStorage("RentalsDetail",JSON.stringify(this.rentals))
+    }
+    else {
+      localStorage.addLocalStorage('RentalsDetail', JSON.stringify(this.rentals));
+      this.rentals = JSON.parse(localStorage.getLocalStorage('RentalsDetail'))
+    }
+  }
+
+  totalRentDate(){
+    this.eventStartTime = new Date(this.rentDatee);
+    this.eventEndTime = new Date(this.returnDatee);
+    this.rentalPeriod = Math.floor((this.eventEndTime.valueOf() - this.eventStartTime.valueOf()) / (1000 * 60 * 60 * 24));
+  }
+
+  errorResponseMethod(){
+    if(this.setErrorResponse.error.Errors){
+      if(this.setErrorResponse.error.Errors.length>0){
+        for (let i = 0; i < this.setErrorResponse.error.Errors.length; i++) {
+          this.toastrService.error(this.setErrorResponse.error.Errors[i].ErrorMessage,"Doğrulama Hatası",{toastClass: 'toast ngx-toastr'})
+        }
+      }
+    }
+    else{
+      this.toastrService.error(this.setErrorResponse.error.message,"Doğrulama Hatası",{toastClass: 'toast ngx-toastr'})
+    }
   }
 
 }

@@ -9,7 +9,7 @@ import { ResponseModel } from 'app/models/responseModel';
   providedIn: 'root'
 })
 export class BrandService {
-  apiUrl = "https://localhost:44330/api";
+  apiUrl = "https://demotakipet.website/api";
 
   constructor(private httpClient: HttpClient) { }
 
