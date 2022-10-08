@@ -4,37 +4,37 @@ import { Observable } from 'rxjs';
 import { ListResponseModel } from 'app/models/listResponseModel';
 import { Brand } from 'app/models/brand';
 import { ResponseModel } from 'app/models/responseModel';
+import { environment } from 'environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BrandService {
-  apiUrl = "https://demotakipet.website/api";
 
   constructor(private httpClient: HttpClient) { }
 
   getBrands(): Observable<ListResponseModel<Brand>> {
-    let newPath = this.apiUrl + "/brands/getall";
+    let newPath = environment.apiUrl + "/brands/getall";
     return this.httpClient.get<ListResponseModel<Brand>>(newPath);
   }
 
   addBrand(brand:Brand): Observable<ResponseModel> {
-    let newPath = this.apiUrl + "/brands/add";
+    let newPath = environment.apiUrl + "/brands/add";
     return this.httpClient.post<ResponseModel>(newPath,brand);
   }
 
   updateBrand(brand:Brand): Observable<ResponseModel> {
-    let newPath = this.apiUrl + "/brands/update";
+    let newPath = environment.apiUrl + "/brands/update";
     return this.httpClient.post<ResponseModel>(newPath,brand);
   }
 
   deleteBrand(brand:Brand): Observable<ResponseModel> {
-    let newPath = this.apiUrl + "/brands/delete";
+    let newPath = environment.apiUrl + "/brands/delete";
     return this.httpClient.post<ResponseModel>(newPath,brand);
   }
 
   getByIdBrand(brandId:number): Observable<ListResponseModel<Brand>> {
-    let newPath = this.apiUrl + "/brands/getbyid?brandId="+brandId;
+    let newPath = environment.apiUrl + "/brands/getbyid?brandId="+brandId;
     return this.httpClient.get<ListResponseModel<Brand>>(newPath);
   }
 }

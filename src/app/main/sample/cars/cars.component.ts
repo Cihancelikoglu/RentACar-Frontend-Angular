@@ -4,6 +4,7 @@ import { Car } from "app/models/car";
 import { CarDetailDto } from "app/models/carDetailDto";
 import { Color } from "app/models/color";
 import { CarService } from "app/services/car/car.service";
+import { LocalStorageService } from "app/services/localStorage/local-storage.service";
 import { ToastrService } from "ngx-toastr";
 
 @Component({
@@ -21,6 +22,7 @@ export class CarsComponent implements OnInit {
   constructor(
     private carService: CarService,
     private toastrService:ToastrService,
+    private localStorage:LocalStorageService
   ) {}
   public contentHeader: object;
 
@@ -56,9 +58,14 @@ export class CarsComponent implements OnInit {
   }
 
   delete(car:Car){
-    if (window.confirm("Silmek istediğinizden emin misiniz?")) {
-      this.carDelete(car)
+    if(this.localStorage.getLocalStorage('token')){
+      if (window.confirm("Silmek istediğinizden emin misiniz?")) {
+        this.carDelete(car)
+      }
     }
+   else{
+    this.toastrService.error("Sisteme Giriş Yapmalısınız","Başarısız",{toastClass: 'toast ngx-toastr'})
+   }
   }
 
   carDelete(car:Car){

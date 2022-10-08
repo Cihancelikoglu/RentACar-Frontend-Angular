@@ -7,15 +7,12 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { CoreConfigService } from '@core/services/config.service';
 import { CoreMenuService } from '@core/components/core-menu/core-menu.service';
 
-import { User } from 'app/auth/models';
-
 @Component({
   selector: '[core-menu-horizontal-collapsible]',
   templateUrl: './collapsible.component.html'
 })
 export class CoreMenuHorizontalCollapsibleComponent implements OnInit, OnDestroy {
   coreConfig: any;
-  currentUser: User;
   isShow = false;
 
   // Conditionally add the active classes if UrlInChildren
@@ -61,7 +58,6 @@ export class CoreMenuHorizontalCollapsibleComponent implements OnInit, OnDestroy
 
     // Subscribe to the current menu changes
     this._coreMenuService.onMenuChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(() => {
-      this.currentUser = this._coreMenuService.currentUser;
     });
 
     // Listen for router events and expand

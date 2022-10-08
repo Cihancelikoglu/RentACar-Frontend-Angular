@@ -2,19 +2,21 @@ import { Component, OnDestroy, OnInit, HostBinding, HostListener, ViewEncapsulat
 import { MediaObserver } from '@angular/flex-layout';
 
 import * as _ from 'lodash';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 
-import { AuthenticationService } from 'app/auth/service';
 import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
 import { CoreConfigService } from '@core/services/config.service';
 import { CoreMediaService } from '@core/services/media.service';
 
-import { User } from 'app/auth/models';
-
 import { coreConfig } from 'app/app-config';
 import { Router } from '@angular/router';
+import { UserService } from 'app/services/user/user.service';
+import { User } from 'app/models/user';
+import { LocalStorageService } from 'app/services/localStorage/local-storage.service';
+import { AuthService } from 'app/services/auth/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-navbar',
@@ -30,12 +32,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public currentSkin: string;
   public prevSkin: string;
 
-  public currentUser: User;
-
   public languageOptions: any;
   public navigation: any;
   public selectedLanguage: any;
 
+  user:User;
+  
   @HostBinding('class.fixed-top')
   public isFixed = false;
 
@@ -76,14 +78,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
    */
   constructor(
     private _router: Router,
-    private _authenticationService: AuthenticationService,
     private _coreConfigService: CoreConfigService,
     private _coreMediaService: CoreMediaService,
     private _coreSidebarService: CoreSidebarService,
     private _mediaObserver: MediaObserver,
-    public _translateService: TranslateService
+    public _translateService: TranslateService,
+    private userService:UserService,
+    private localStorage:LocalStorageService,
+    private authService:AuthService,
+    private toastrService:ToastrService
   ) {
-    this._authenticationService.currentUser.subscribe(x => (this.currentUser = x));
 
     this.languageOptions = {
       en: {
@@ -164,10 +168,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   /**
    * Logout method
    */
-  logout() {
-    this._authenticationService.logout();
-    this._router.navigate(['/pages/authentication/login-v2']);
-  }
+ 
 
   // Lifecycle Hooks
   // -----------------------------------------------------------------------------------------------------
@@ -177,7 +178,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     // get the currentUser details from localStorage
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
     // Subscribe to the config changes
     this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
@@ -213,6 +213,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.selectedLanguage = _.find(this.languageOptions, {
       id: this._translateService.currentLang
     });
+
+    if(localStorage.getItem('token')){
+      this.getByUser()
+    }
+    
   }
 
   /**
@@ -223,4 +228,20 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
   }
+
+  getByUser() {
+    this.userService.getByUser(this.localStorage.getLocalStorage('AccountMail')).subscribe((response) => {
+      this.user=response.data;
+    });
+  }
+
+  logOut(){
+    this.authService.logOut();
+    this.localStorage.removeLocalStorage('AccountMail');
+    this.toastrService.info("Çıkış Yapıldı","Başarılı",{toastClass: 'toast ngx-toastr'})
+    setTimeout(() => {
+      window.location.href = "/"
+    }, 3000);
+  }
+
 }

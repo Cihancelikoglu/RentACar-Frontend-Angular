@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup,Validators,FormControl,FormBuilder } from "@angular/forms";
 import { CoreConfigService } from '@core/services/config.service';
+import { User } from 'app/models/user';
 import { AuthService } from 'app/services/auth/auth.service';
+import { LocalStorageService } from 'app/services/localStorage/local-storage.service';
+import { UserService } from 'app/services/user/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 
@@ -19,7 +22,9 @@ export class LoginComponent implements OnInit {
     private _coreConfigService: CoreConfigService,
     private formBuilder:FormBuilder,
     private authService:AuthService,
-    private toastrService:ToastrService
+    private toastrService:ToastrService,
+    private localStorage:LocalStorageService
+
   ) { 
 
     this._unsubscribeAll = new Subject();
@@ -58,9 +63,12 @@ export class LoginComponent implements OnInit {
       let authModel = Object.assign({},this.loginForm.value)
       this.authService.login(authModel).subscribe((response)=>{
         this.toastrService.success(response.message,"Başarılı",{toastClass: 'toast ngx-toastr'})
+
+        this.setLocalEmail()
         setTimeout(() => {
           window.history.back()
         }, 3000);
+
         localStorage.setItem("token",response.data.token)
       },errorResponse=>{
         this.toastrService.success(errorResponse.error,"Hata",{toastClass: 'toast ngx-toastr'})
@@ -72,5 +80,9 @@ export class LoginComponent implements OnInit {
         closeButton: true
       })
     }
+  }
+
+  setLocalEmail(){
+    this.localStorage.addLocalStorage('AccountMail',(this.loginForm.get('email').value))
   }
 }

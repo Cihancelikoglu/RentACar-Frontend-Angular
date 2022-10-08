@@ -76,7 +76,7 @@ const routes = [
     component: RentalComponent,
     data: { animation: 'rental' }
   },
-  { path: "rental/rentaldetail/:carId", component: RentalDetailComponent, canActivate:[LoginGuard] },
+  { path: "rental/rentaldetail/:carId", component: RentalDetailComponent},
   { path: "rental/color/:colorId", component: RentalComponent},
   { path: "rental/brand/:brandId", component: RentalComponent},
   { path: "rental/:carId", component: RentalAddComponent, canActivate:[LoginGuard] },

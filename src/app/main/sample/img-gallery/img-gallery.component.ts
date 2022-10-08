@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CarImages } from 'app/models/carImage';
 import { CarimageService } from 'app/services/carImages/carimage.service';
+import { LocalStorageService } from 'app/services/localStorage/local-storage.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -17,7 +18,8 @@ export class ImgGalleryComponent implements OnInit {
   constructor(
     private carImageService:CarimageService,
     private activatedRoute: ActivatedRoute,
-    private toastrService:ToastrService
+    private toastrService:ToastrService,
+    private localStorage:LocalStorageService
   ) { }
   public contentHeader: object;
 
@@ -69,9 +71,14 @@ export class ImgGalleryComponent implements OnInit {
   }
 
   delete(carImage:CarImages){
-    if (window.confirm("Silmek istediğinizden emin misiniz?")) {
-      this.deleteImage(carImage)
+    if(this.localStorage.getLocalStorage('token')){
+      if (window.confirm("Silmek istediğinizden emin misiniz?")) {
+        this.deleteImage(carImage)
+      }
     }
+   else{
+    this.toastrService.error("Sisteme Giriş Yapmalısınız","Başarısız",{toastClass: 'toast ngx-toastr'})
+   }
   }
 
   deleteImage(carImage:CarImages){

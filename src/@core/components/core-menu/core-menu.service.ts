@@ -3,14 +3,11 @@ import { Router } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
-import { AuthenticationService } from 'app/auth/service';
-import { User } from 'app/auth/models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CoreMenuService {
-  currentUser: User;
   onItemCollapsed: Subject<any>;
   onItemCollapseToggled: Subject<any>;
 
@@ -27,8 +24,7 @@ export class CoreMenuService {
    * @param {Router} _router
    * @param {AuthenticationService} _authenticationService
    */
-  constructor(private _router: Router, private _authenticationService: AuthenticationService) {
-    this._authenticationService.currentUser.subscribe(x => (this.currentUser = x));
+  constructor(private _router: Router) {
 
     // Set defaults
     this.onItemCollapsed = new Subject();

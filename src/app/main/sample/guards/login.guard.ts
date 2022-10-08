@@ -22,8 +22,8 @@ export class LoginGuard implements CanActivate {
       return true
     }
     else{
-      this.router.navigate(["login"])
-      this.toastrService.info("Sisteme Giriş Yapmalısınız")
+      // this.router.navigate(["login"])
+      this.toastrService.error("Sisteme Giriş Yapmalısınız","Başarısız",{toastClass: 'toast ngx-toastr'})
       return false
     }
   }

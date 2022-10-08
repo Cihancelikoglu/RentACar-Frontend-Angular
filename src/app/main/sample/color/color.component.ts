@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Color } from 'app/models/color';
 import { ColorService } from 'app/services/color/color.service';
+import { LocalStorageService } from 'app/services/localStorage/local-storage.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -13,8 +14,11 @@ export class ColorComponent implements OnInit {
   dataLoaded = false;
   filterText="";
 
-  constructor(private colorService:ColorService,
-    private toastrService:ToastrService) { }
+  constructor(
+    private colorService:ColorService,
+    private toastrService:ToastrService,
+    private localStorage:LocalStorageService
+    ) { }
 
   public contentHeader: object
 
@@ -51,9 +55,14 @@ export class ColorComponent implements OnInit {
   }
 
   delete(color:Color){
-    if (window.confirm("Silmek istediğinizden emin misiniz?")) {
-      this.colorDelete(color)
+    if(this.localStorage.getLocalStorage('token')){
+      if (window.confirm("Silmek istediğinizden emin misiniz?")) {
+        this.colorDelete(color)
+      }
     }
+   else{
+    this.toastrService.error("Sisteme Giriş Yapmalısınız","Başarısız",{toastClass: 'toast ngx-toastr'})
+   }
   }
 
   colorDelete(color:Color){

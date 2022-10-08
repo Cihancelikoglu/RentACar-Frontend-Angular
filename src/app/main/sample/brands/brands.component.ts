@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Brand } from 'app/models/brand';
 import { BrandService } from 'app/services/brand/brand.service';
+import { LocalStorageService } from 'app/services/localStorage/local-storage.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -15,7 +16,8 @@ export class BrandsComponent implements OnInit {
 
   constructor(
     private brandService:BrandService,
-    private toastrService:ToastrService
+    private toastrService:ToastrService,
+    private localStorage:LocalStorageService
     ) { }
 
   public contentHeader: object
@@ -53,9 +55,14 @@ export class BrandsComponent implements OnInit {
     }
 
     delete(brand:Brand){
-      if (window.confirm("Silmek istediğinizden emin misiniz?")) {
-        this.brandDelete(brand)
+      if(this.localStorage.getLocalStorage('token')){
+        if (window.confirm("Silmek istediğinizden emin misiniz?")) {
+          this.brandDelete(brand)
+        }
       }
+     else{
+      this.toastrService.error("Sisteme Giriş Yapmalısınız","Başarısız",{toastClass: 'toast ngx-toastr'})
+     }
     }
 
     brandDelete(brand:Brand){
