@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://demotakipet.website/api'
+  apiUrl: 'https://localhost:44330/api'
 };
 
 /*

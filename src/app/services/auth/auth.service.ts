@@ -21,6 +21,7 @@ export class AuthService {
 
   logOut(){
     this.localStorage.removeLocalStorage('token');
+    this.localStorage.removeLocalStorage('Account');
   }
 
   isAuthenticated(){

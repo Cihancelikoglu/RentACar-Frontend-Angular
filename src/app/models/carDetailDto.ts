@@ -6,5 +6,6 @@ export interface CarDetailDto{
     dailyPrice:number;
     modelYear:Date;
     description:string;
+    findex:number;
     carImages:string;
 }

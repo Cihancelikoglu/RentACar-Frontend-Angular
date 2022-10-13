@@ -12,7 +12,7 @@ export class CreditCartService {
 
 
   peymentControl(rental:CreditCart){
-    let newPath = environment.apiUrl + "/api/creditcards/creditcartcontrol";
+    let newPath = environment.apiUrl + "/creditcards/creditcartcontrol";
     return this.httpClient.post(newPath,rental);
   }
 }

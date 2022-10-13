@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup,Validators,FormControl,FormBuilder } from "@angular/forms";
 import { CoreConfigService } from '@core/services/config.service';
+import { Findex } from 'app/models/findex';
 import { User } from 'app/models/user';
 import { AuthService } from 'app/services/auth/auth.service';
 import { LocalStorageService } from 'app/services/localStorage/local-storage.service';
@@ -15,7 +16,7 @@ import { Subject } from 'rxjs';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  loginForm:FormGroup
+  loginForm:FormGroup;
 
   private _unsubscribeAll: Subject<any>;
   constructor(
@@ -23,7 +24,8 @@ export class LoginComponent implements OnInit {
     private formBuilder:FormBuilder,
     private authService:AuthService,
     private toastrService:ToastrService,
-    private localStorage:LocalStorageService
+    private localStorage:LocalStorageService,
+    private userService:UserService
 
   ) { 
 
@@ -64,6 +66,7 @@ export class LoginComponent implements OnInit {
       this.authService.login(authModel).subscribe((response)=>{
         this.toastrService.success(response.message,"Başarılı",{toastClass: 'toast ngx-toastr'})
 
+        this.getUser()
         this.setLocalEmail()
         setTimeout(() => {
           window.history.back()
@@ -84,5 +87,11 @@ export class LoginComponent implements OnInit {
 
   setLocalEmail(){
     this.localStorage.addLocalStorage('AccountMail',(this.loginForm.get('email').value))
+  }
+
+  getUser(){
+    this.userService.getByUser((this.loginForm.get('email').value)).subscribe((response)=>{
+      this.localStorage.addLocalStorage('Account',JSON.stringify(response.data.id))
+    })
   }
 }

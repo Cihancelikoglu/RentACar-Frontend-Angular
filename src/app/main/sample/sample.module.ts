@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 import { CoreCommonModule } from '@core/common.module';
 
@@ -127,7 +128,8 @@ const routes = [
   ToastrModule.forRoot()
   ],
   providers: [
-    {provide:HTTP_INTERCEPTORS, useClass:AuthInterceptor,multi:true}
+    {provide:HTTP_INTERCEPTORS, useClass:AuthInterceptor,multi:true},
+    {provide:LocationStrategy, useClass:HashLocationStrategy}
   ],
   exports: [HomeComponent]
 })

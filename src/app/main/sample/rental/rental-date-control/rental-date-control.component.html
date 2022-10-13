@@ -16,14 +16,9 @@
             <input type="number" formControlName="customerName" class="form-control" placeholder="yyyy-mm-dd"/> -->
         </div>
       </form>
-      <!-- <div *ngFor="let rental of rentals">
-        {{rental.returnDate}}
-        {{rental.price}}
-        {{rental.totalDate}}
-      </div> -->
     </div>
     <div class="modal-footer">
-      <button *ngFor="let carDetail of carDetails" type="button" class="btn btn-primary" (click)="rentalDateControl(carDetail)">Kontrol Et</button>
+      <button *ngFor="let carDetail of carDetails" type="button" class="btn btn-primary" (click)="rentalControl(carDetail)">Kontrol Et</button>
   </div>
   </ng-template>
 

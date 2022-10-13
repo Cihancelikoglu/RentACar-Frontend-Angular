@@ -8,6 +8,7 @@ import { Color } from "app/models/color";
 import { ResponseModel } from "app/models/responseModel";
 import { Car } from "app/models/car";
 import { environment } from "environments/environment";
+import { SingleResponseModel } from "app/models/singleResponseModel";
 
 @Injectable({
   providedIn: "root",
@@ -36,9 +37,9 @@ export class CarService {
     return this.httpClient.post<ResponseModel>(newPath,car);
   }
 
-  getByIdCar(carId:number): Observable<ListResponseModel<Car>> {
+  getByIdCar(carId:number): Observable<SingleResponseModel<Car>> {
     let newPath = environment.apiUrl + "/cars/getbyid?carId="+carId;
-    return this.httpClient.get<ListResponseModel<Car>>(newPath);
+    return this.httpClient.get<SingleResponseModel<Car>>(newPath);
   }
 
   getCarsByColor(colorId: number): Observable<ListResponseModel<CarDetailDto>> {

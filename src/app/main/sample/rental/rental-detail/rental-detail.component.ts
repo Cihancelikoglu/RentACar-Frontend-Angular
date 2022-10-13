@@ -15,7 +15,7 @@ SwiperCore.use([Keyboard, Pagination, Navigation, Virtual]);
   encapsulation: ViewEncapsulation.None,
 })
 export class RentalDetailComponent implements OnInit {
-  carDetails: CarDetailDto[] = [];
+  carDetails: CarDetailDto
   carImages: CarImages[] = [];
   baseImageUrl = "https://demotakipet.website/Uploads/Images/"
   closeResult = '';

@@ -9,7 +9,7 @@ import { CarimageService } from 'app/services/carImages/carimage.service';
 import { CreditCartService } from 'app/services/creditCart/credit-cart.service';
 import { RentalService } from 'app/services/rental/rental.service';
 import { ToastrService } from 'ngx-toastr';
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-rental-add',
@@ -17,22 +17,23 @@ import {Location} from '@angular/common';
   styleUrls: ['./rental-add.component.scss']
 })
 export class RentalAddComponent implements OnInit {
-  rentalAddForm :FormGroup
-  paymentAddForm :FormGroup
-  carDetails: CarDetailDto[] = [];
+  rentalAddForm: FormGroup
+  paymentAddForm: FormGroup
+  carDetails: CarDetailDto
   carImages: CarImages[] = [];
   baseImageUrl = "https://demotakipet.website/Uploads/Images/"
-  parivatecarId:number;
+  parivatecarId: number;
   rentals: RentalDate[] = [];
-  
+  setErrorResponse: any;
+
   constructor(
-    private rentalService:RentalService,
-    private formBuilder:FormBuilder,
-    private toastrService:ToastrService,
-    private carDetailService:CarDetailService,
+    private rentalService: RentalService,
+    private formBuilder: FormBuilder,
+    private toastrService: ToastrService,
+    private carDetailService: CarDetailService,
     private activatedRoute: ActivatedRoute,
-    private carImageService:CarimageService,
-    private creditCartService:CreditCartService,
+    private carImageService: CarimageService,
+    private creditCartService: CreditCartService,
     private location: Location
   ) { }
 
@@ -45,7 +46,7 @@ export class RentalAddComponent implements OnInit {
         this.getByCarImageId(params["carId"]);
       }
     });
-    
+
     this.getLocalStorage();
     this.createRentalForm()
     this.createPaymentAddForm();
@@ -78,7 +79,7 @@ export class RentalAddComponent implements OnInit {
   }
 
   getCarDetails(carId: number) {
-    this.parivatecarId=carId;
+    this.parivatecarId = carId;
     this.carDetailService.getCarDetails(carId).subscribe((response) => {
       this.carDetails = response.data;
     });
@@ -110,62 +111,63 @@ export class RentalAddComponent implements OnInit {
     })
   }
 
-  addRental(){
-    if(this.rentalAddForm.valid && this.paymentAddForm.valid){
-        let rentalModel = Object.assign({},this.rentalAddForm.value)
-        let paymentModel = Object.assign({}, this.paymentAddForm.value)
-        
-        this.creditCartService.peymentControl(paymentModel).subscribe(paymentResponse => {
-          this.rentalService.addRentals(rentalModel).subscribe(rentalResponse=>{
-            this.toastrService.success(rentalResponse.message, "Başarılı", { toastClass: 'toast ngx-toastr' })
-          },errorResponse=>{
-            if(errorResponse.error.Errors){
-              if(errorResponse.error.Errors.length>0){
-                for (let i = 0; i < errorResponse.error.Errors.length; i++) {
-                  this.toastrService.error(errorResponse.error.Errors[i].ErrorMessage,"Doğrulama Hatası",{toastClass: 'toast ngx-toastr'})
-                }
-              }
-            }
-            else{
-              this.toastrService.error(errorResponse.error.message,"Doğrulama Hatası",{toastClass: 'toast ngx-toastr'})
-            }
-          })
+  addRental() {
+    if (this.rentalAddForm.valid && this.paymentAddForm.valid) {
+      let rentalModel = Object.assign({}, this.rentalAddForm.value)
+      let paymentModel = Object.assign({}, this.paymentAddForm.value)
 
-          this.toastrService.success("Ödeme Başarıyla Gerçekleşti", "Araç Kiralandı", {
-            toastClass: 'toast ngx-toastr',
-            closeButton: true
-          })
-          localStorage.removeItem("RentalsDetail");
-          setTimeout(() => {
-            window.location.href = "/cars"
-          }, 3000);
-        },errorResponse=>{
-          if(errorResponse.error.Errors){
-            if(errorResponse.error.Errors.length>0){
-              for (let i = 0; i < errorResponse.error.Errors.length; i++) {
-                this.toastrService.error(errorResponse.error.Errors[i].ErrorMessage,"Doğrulama Hatası",{toastClass: 'toast ngx-toastr'})
-              }
-            }
-          }
-          else{
-            this.toastrService.error(errorResponse.error.message,"Doğrulama Hatası",{toastClass: 'toast ngx-toastr'})
-          }
+      this.creditCartService.peymentControl(paymentModel).subscribe(paymentResponse => {
+        if(paymentResponse != null){
+          
+        }
+        this.rentalService.addRentals(rentalModel).subscribe(rentalResponse => {
+          this.toastrService.success(rentalResponse.message, "Başarılı", { toastClass: 'toast ngx-toastr' })
+        }, errorResponse => {
+          this.setErrorResponse = errorResponse;
+          this.errorResponse()
         })
+
+        this.toastrService.success("Ödeme Başarıyla Gerçekleşti", "Araç Kiralandı", {toastClass: 'toast ngx-toastr',closeButton: true
+          
+        })
+
+        localStorage.removeItem("RentalsDetail");
+        setTimeout(() => {
+          window.location.href = "/cars"
+        }, 3000);
+
+      }, errorResponse => {
+        this.setErrorResponse = errorResponse;
+        this.errorResponse()
+      })
     }
-    else{
-      this.toastrService.error("Eksik Alanları Doldurunuz","Dikkat",{toastClass: 'toast ngx-toastr',closeButton: true
+    else {
+      this.toastrService.error("Eksik Alanları Doldurunuz", "Dikkat", {
+        toastClass: 'toast ngx-toastr', closeButton: true
       })
     }
   }
 
-  removeStorage(){
+  removeStorage() {
     localStorage.removeItem("RentalsDetail");
-    this.toastrService.error("Ödeme İptal Edildi","Yönlendiriliyorsunuz",{toastClass: 'toast ngx-toastr',closeButton: true})
+    this.toastrService.error("Ödeme İptal Edildi", "Yönlendiriliyorsunuz", { toastClass: 'toast ngx-toastr', closeButton: true })
     setTimeout(() => {
       this.location.back();
     }, 3000);
-    
   }
-  
-  
+
+  errorResponse() {
+    if (this.setErrorResponse.error.Errors) {
+      if (this.setErrorResponse.error.Errors.length > 0) {
+        for (let i = 0; i < this.setErrorResponse.error.Errors.length; i++) {
+          this.toastrService.error(this.setErrorResponse.error.Errors[i].ErrorMessage, "Doğrulama Hatası", { toastClass: 'toast ngx-toastr' })
+        }
+      }
+    }
+    else {
+      this.toastrService.error(this.setErrorResponse.error.message, "Doğrulama Hatası", { toastClass: 'toast ngx-toastr' })
+    }
+  }
+
+
 }
