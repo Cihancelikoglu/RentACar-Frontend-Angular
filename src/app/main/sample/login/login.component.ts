@@ -66,8 +66,8 @@ export class LoginComponent implements OnInit {
       this.authService.login(authModel).subscribe((response)=>{
         this.toastrService.success(response.message,"Başarılı",{toastClass: 'toast ngx-toastr'})
 
-        this.getUser()
-        this.setLocalEmail()
+        // this.getUser()
+        // this.setLocalEmail()
         setTimeout(() => {
           window.history.back()
         }, 3000);
@@ -85,13 +85,13 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  setLocalEmail(){
-    this.localStorage.addLocalStorage('AccountMail',(this.loginForm.get('email').value))
-  }
+  // setLocalEmail(){
+  //   this.localStorage.addLocalStorage('AccountMail',(this.loginForm.get('email').value))
+  // }
 
-  getUser(){
-    this.userService.getByUser((this.loginForm.get('email').value)).subscribe((response)=>{
-      this.localStorage.addLocalStorage('Account',JSON.stringify(response.data.id))
-    })
-  }
+  // getUser(){
+  //   this.userService.getByUser((this.loginForm.get('email').value)).subscribe((response)=>{
+  //     this.localStorage.addLocalStorage('Account',JSON.stringify(response.data.id))
+  //   })
+  // }
 }

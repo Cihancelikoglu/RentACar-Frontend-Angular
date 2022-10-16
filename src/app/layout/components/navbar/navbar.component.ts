@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
 import { CoreConfigService } from '@core/services/config.service';
 import { CoreMediaService } from '@core/services/media.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 import { coreConfig } from 'app/app-config';
 import { Router } from '@angular/router';
@@ -17,6 +18,7 @@ import { User } from 'app/models/user';
 import { LocalStorageService } from 'app/services/localStorage/local-storage.service';
 import { AuthService } from 'app/services/auth/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { Userss } from 'app/models/users';
 
 @Component({
   selector: 'app-navbar',
@@ -86,7 +88,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private userService:UserService,
     private localStorage:LocalStorageService,
     private authService:AuthService,
-    private toastrService:ToastrService
+    private toastrService:ToastrService,
   ) {
 
     this.languageOptions = {
@@ -214,10 +216,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       id: this._translateService.currentLang
     });
 
-    if(localStorage.getItem('token')){
-      this.getByUser()
-    }
-    
+    this.getCurrentUser()
   }
 
   /**
@@ -228,16 +227,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
   }
-
-  getByUser() {
-    this.userService.getByUser(this.localStorage.getLocalStorage('AccountMail')).subscribe((response) => {
-      this.user=response.data;
-    });
+  
+  getCurrentUser() {
+    this.user = this.authService.getUser();
   }
 
   logOut(){
     this.authService.logOut();
-    this.localStorage.removeLocalStorage('AccountMail');
     this.toastrService.info("Çıkış Yapıldı","Başarılı",{toastClass: 'toast ngx-toastr'})
     setTimeout(() => {
       window.location.href = "/"

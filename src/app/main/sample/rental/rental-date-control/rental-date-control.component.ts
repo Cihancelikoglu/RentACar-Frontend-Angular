@@ -4,7 +4,10 @@ import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Car } from 'app/models/car';
 import { CarDetailDto } from 'app/models/carDetailDto';
+import { Findex } from 'app/models/findex';
 import { RentalDate } from 'app/models/rentalDate';
+import { Userss } from 'app/models/users';
+import { AuthService } from 'app/services/auth/auth.service';
 import { CarService } from 'app/services/car/car.service';
 import { CarDetailService } from 'app/services/carDetail/car-detail.service';
 import { FindexService } from 'app/services/findex/findex.service';
@@ -20,7 +23,6 @@ import { ToastrService } from 'ngx-toastr';
 export class RentalDateControlComponent implements OnInit {
   rentalAddForm: FormGroup
   carDetails: CarDetailDto;
-  carIdUrl: Number;
   rentals: RentalDate[] = [];
   rentDatee: Date;
   returnDatee: Date;
@@ -29,8 +31,9 @@ export class RentalDateControlComponent implements OnInit {
   rentalPeriod = 0;
   setErrorResponse: any;
   car: Car;
+  user:Userss
+  userFindex:Findex
 
-  userId: number;
   findex: number;
 
   constructor(
@@ -39,20 +42,19 @@ export class RentalDateControlComponent implements OnInit {
     private toastrService: ToastrService,
     private modalService: NgbModal,
     private carDetailService: CarDetailService,
-    private activatedRoute: ActivatedRoute,
     private _localStorage: LocalStorageService,
     private findexService: FindexService,
-    private carService: CarService
+    private carService: CarService,
+    private authService:AuthService,
+    private router:ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe((params) => {
-      if (params["carId"]) {
-        this.getCarDetails(params["carId"]);
-        this.createRentalCheckForm(params["carId"]);
-        this.getByCarId(params["carId"])
-      }
-    });
+    this.getCarDetails();
+    this.getByCarId()
+    this.getCurrentUser()
+    this.getUserFindex()
+    this.createRentalCheckForm();
   }
 
   open(content) {
@@ -64,29 +66,30 @@ export class RentalDateControlComponent implements OnInit {
     }
   }
 
-  getCarDetails(carId: number) {
-    this.carDetailService.getCarDetails(carId).subscribe((response) => {
+  getCarDetails() {
+    this.carDetailService.getCarDetails(this.router.snapshot.params.carId).subscribe((response) => {
       this.carDetails = response.data;
     });
   }
 
-  getByCarId(carId: number) {
-    this.carService.getByIdCar(carId).subscribe((response) => {
+  getByCarId() {
+    this.carService.getByIdCar(this.router.snapshot.params.carId).subscribe((response) => {
       this.car = response.data;
       this.findex = response.data.findex
     });
   }
 
   getUserFindex() {
-    let userid = this._localStorage.getLocalStorage('Account')
-    this.userId = JSON.parse(userid)
-    this.findexService.getUserFindex(this.userId).subscribe((response) => {
-      // this._localStorage.addLocalStorage("findex",JSON.stringify(response.data.findex))
+    this.findexService.getUserFindex(this.user.id).subscribe((response) => {
+      this.userFindex = response.data
     })
   }
 
-  createRentalCheckForm(carId: number) {
-    this.carIdUrl = carId;
+  getCurrentUser() {
+    this.user = this.authService.getUser();
+  }
+
+  createRentalCheckForm() {
     this.rentalAddForm = this.formBuilder.group({
       carId: ["", Validators.required],
       rentDate: ["", Validators.required],
@@ -137,13 +140,12 @@ export class RentalDateControlComponent implements OnInit {
   }
 
   checkIfFindex() {
-    this.getUserFindex()
     let findex = this.findex;
-    this.findexService.checkIfFindex(this.userId, findex).subscribe((response) => {
+    this.findexService.checkIfFindex(this.user.id, findex).subscribe((response) => {
 
       this.toastrService.success(response.message, "Yönlendiriliyorsunuz", { toastClass: 'toast ngx-toastr', closeButton: true })
       setTimeout(() => {
-        window.location.href = "/rental/" + this.carIdUrl;
+        window.location.href = "/rental/" + this.router.snapshot.params.carId;
       }, 3000);
 
     }, errorResponse => {
