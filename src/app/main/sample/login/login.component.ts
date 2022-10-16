@@ -84,14 +84,4 @@ export class LoginComponent implements OnInit {
       })
     }
   }
-
-  // setLocalEmail(){
-  //   this.localStorage.addLocalStorage('AccountMail',(this.loginForm.get('email').value))
-  // }
-
-  // getUser(){
-  //   this.userService.getByUser((this.loginForm.get('email').value)).subscribe((response)=>{
-  //     this.localStorage.addLocalStorage('Account',JSON.stringify(response.data.id))
-  //   })
-  // }
 }
