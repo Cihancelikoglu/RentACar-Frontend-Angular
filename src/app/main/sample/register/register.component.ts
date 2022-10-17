@@ -1,22 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup,Validators,FormControl,FormBuilder } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CoreConfigService } from '@core/services/config.service';
-import { Findex } from 'app/models/findex';
-import { User } from 'app/models/user';
+import { RegisterModel } from 'app/models/registerModel';
 import { AuthService } from 'app/services/auth/auth.service';
 import { LocalStorageService } from 'app/services/localStorage/local-storage.service';
-import { UserService } from 'app/services/user/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 
-
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss']
 })
-export class LoginComponent implements OnInit {
-  loginForm:FormGroup;
+export class RegisterComponent implements OnInit {
+  registerForm:FormGroup;
+
 
   private _unsubscribeAll: Subject<any>;
   constructor(
@@ -25,8 +23,6 @@ export class LoginComponent implements OnInit {
     private authService:AuthService,
     private toastrService:ToastrService,
     private localStorage:LocalStorageService,
-    private userService:UserService
-
   ) { 
 
     this._unsubscribeAll = new Subject();
@@ -50,30 +46,28 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.createLoginForm();
+    this.createRegisterForm();
   }
 
-  createLoginForm(){
-    this.loginForm = this.formBuilder.group({
+  createRegisterForm(){
+    this.registerForm = this.formBuilder.group({
+      firstName:["",Validators.required],
+      lastName:["",Validators.required],
       email:["",Validators.required],
       password:["",Validators.required]
     })
   }
 
-  login(){
-    if(this.loginForm.valid){
-      let authModel = Object.assign({},this.loginForm.value)
-      this.authService.login(authModel).subscribe((response)=>{
+  register(){
+    if(this.registerForm.valid){
+      let authModel = Object.assign({},this.registerForm.value)
+      console.log(authModel)
+      this.authService.register(authModel).subscribe(response=>{
         this.toastrService.success(response.message,"Başarılı",{toastClass: 'toast ngx-toastr'})
 
-        // this.getUser()
-        // this.setLocalEmail()
         setTimeout(() => {
-          // window.history.back()
-          window.location.href = "/home"
+          window.location.href = "/login"
         }, 3000);
-
-        localStorage.setItem("token",response.data.token)
       },errorResponse=>{
         this.toastrService.success(errorResponse.error,"Hata",{toastClass: 'toast ngx-toastr'})
       })
@@ -85,4 +79,5 @@ export class LoginComponent implements OnInit {
       })
     }
   }
+
 }

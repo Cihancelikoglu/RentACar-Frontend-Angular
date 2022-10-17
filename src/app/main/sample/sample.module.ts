@@ -40,6 +40,7 @@ import { LoginComponent } from './login/login.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { LoginGuard } from './guards/login.guard';
+import { RegisterComponent } from './register/register.component';
 
 const routes = [
   {
@@ -95,6 +96,7 @@ const routes = [
   { path: "brands/update/:brandId", component: BrandUpdateComponent, canActivate:[LoginGuard] },
 
   {path:"login", component:LoginComponent},
+  {path:"register", component:RegisterComponent},
 ];
 
 @NgModule({
@@ -122,7 +124,8 @@ const routes = [
     ImgGalleryComponent,
     GalleryAddComponent,
     GalleryUpdateComponent,
-    LoginComponent],
+    LoginComponent,
+    RegisterComponent],
   imports: [RouterModule.forChild(routes), ContentHeaderModule, TranslateModule, CoreCommonModule, SwiperModule, NgbModule, FormsModule, BrowserAnimationsModule,
   NgxMaskModule.forRoot(),
   ToastrModule.forRoot()

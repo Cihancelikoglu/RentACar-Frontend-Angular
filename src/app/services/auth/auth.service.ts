@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { LoginModel } from 'app/models/loginModel';
+import { RegisterModel } from 'app/models/registerModel';
 import { SingleResponseModel } from 'app/models/singleResponseModel';
 import { TokenModel } from 'app/models/tokenModel';
 import { User } from 'app/models/user';
@@ -48,9 +49,13 @@ export class AuthService {
     return this.htttpClient.post<SingleResponseModel<TokenModel>>(newPath,loginModel) 
   }
 
+  register(registerModel:RegisterModel){
+    let newPath = environment.apiUrl +"/auth/register";
+    return this.htttpClient.post<SingleResponseModel<RegisterModel>>(newPath,registerModel) 
+  }
+
   logOut(){
     this.localStorage.removeLocalStorage('token');
-    this.localStorage.removeLocalStorage('Account');
   }
 
   getUser(): Userss | undefined {

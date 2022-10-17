@@ -1,0 +1,60 @@
+<div class="auth-wrapper auth-v2">
+    <div class="auth-inner row m-0">
+        <div class="d-flex col-lg-12 align-items-center auth-bg px-2 p-lg-5">
+            <div class="col-12 col-sm-3 col-md-3 col-lg-3 px-xl-2 mx-auto">
+                <h2 class="card-title font-weight-bold mb-1 text-center">Threeew'e Hoşgeldiniz</h2>
+                <p class="card-text mb-2 text-center">Lütfen Giriş Yapmak İçin Bilgilerinizi Giriniz</p>
+                <form class="auth-login-form mt-2" [formGroup]="registerForm">
+                    <div class="form-group">
+                        <label class="form-label">Adınız</label>
+                        <input formControlName="firstName" type="text" class="form-control" id="firstName"
+                            placeholder="Adınız">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Soyadınız</label>
+                        <input formControlName="lastName" type="text" class="form-control" id="lastName"
+                            placeholder="Soyadınız">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Eposta</label>
+                        <input formControlName="email" type="email" class="form-control" id="email"
+                            placeholder="name@example.com">
+                    </div>
+                    <div class="form-group">
+                        <div class="d-flex justify-content-between">
+                            <label for="login-password">Şifre</label><a
+                                routerLink="/pages/authentication/forgot-password-v2"><small>Şifremi
+                                    Unuttum?</small></a>
+                        </div>
+                        <div class="input-group input-group-merge form-password-toggle">
+                            <input formControlName="password" type="password" class="form-control" id="password"
+                                placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" id="remember-me" type="checkbox" tabindex="3" />
+                            <label class="custom-control-label" for="remember-me"> Beni Hatırla</label>
+                        </div>
+                    </div>
+                </form>
+                <button (click)="register()" class="btn btn-primary btn-block" tabindex="4" rippleEffect>
+                    <span class="spinner-border spinner-border-sm mr-1"></span>Register
+                </button>
+                <p class="text-center mt-2">
+                    <span>Bir hesabın yok mu?</span><a routerLink="/pages/authentication/register-v2"><span>&nbsp;Hemen
+                            Hesap Oluştur</span></a>
+                </p>
+                <div class="divider my-2">
+                    <div class="divider-text">-</div>
+                </div>
+                <div class="auth-footer-btn d-flex justify-content-center">
+                    <a class="btn btn-facebook mr-1" href="javascript:void(0)"><i data-feather="facebook"></i></a>
+                    <a class="btn btn-twitter white mr-1" href="javascript:void(0)"><i data-feather="twitter"></i></a>
+                    <a class="btn btn-google mr-1" href="javascript:void(0)"><i data-feather="mail"></i></a>
+                    <a class="btn btn-github" href="javascript:void(0)"><i data-feather="github"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
